@@ -9,11 +9,8 @@ import store from './src/redux/store';
 import StartScreen from './src/components/StartScreen';
 import ModalScreen from './src/components/ModalScreen';
 import PreStart_Game from './src/components/PreStart_Game';
-import CategoryGames from './src/components/CateforyGamesScreen';
-// import ModalTimeOver from './src/components/ModalTimeOver'
-import {
-  AdMobInterstitial,
-} from 'react-native-admob'
+import CategoryGames from './src/components/Category/CateforyGamesScreen';
+import {AdMobInterstitial} from 'react-native-admob';
 import {useEffect} from 'react';
 
 const Stack = createStackNavigator();
@@ -41,11 +38,6 @@ function MyStack() {
         component={ModalScreen}
         options={{title: ''}}
       />
-      {/* <Stack.Screen
-        name="Modal time over"
-        component={ModalTimeOver}
-        options={{title: ''}}
-      /> */}
     </Stack.Navigator>
   );
 }

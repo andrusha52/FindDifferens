@@ -1,42 +1,43 @@
 import React from 'react';
-import {Modal, View, Text, TouchableHighlight, StyleSheet} from 'react-native';
-import {BlurView} from '@react-native-community/blur';
+import {
+  Modal,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  ImageBackground,
+  Image,
+} from 'react-native';
+import imageBgAll from '../imageGames/newDesign/imageBgAll.png';
+import arrowRigth from '../imageGames/newDesign/arrowRight.png';
 
 const ModalScreenNextLVL = props => (
-  <Modal
-    animationType="fade"
-    transparent={true}
-    visible={props.openMenu}
-    onRequestClose={() => {}}>
-    <BlurView
-      style={styles.absolute}
-      blurType="light"
-      blurAmount={10}
-      reducedTransparencyFallbackColor="white"
-    />
-    <View style={styles.centeredView}>
-      <View style={styles.modalView}>
-        <Text style={styles.modalText}>ПАУЗА</Text>
-        <TouchableHighlight
-          style={{
-            ...styles.openButton,
-            backgroundColor: '#2196F3',
-            marginBottom: 5,
-            width: 150,
-          }}
-          onPress={() => props.openMenuModal()}>
-          <Text style={styles.textStyle}>Продолжить</Text>
-        </TouchableHighlight>
-        <TouchableHighlight
-          style={{...styles.openButton, backgroundColor: '#2196F3', width: 150}}
-          onPress={() => {
-            props.exitToStart();
-            props.nav.push('Find Differences');
-          }}>
-          <Text style={styles.textStyle}>Выйти</Text>
-        </TouchableHighlight>
-      </View>
-    </View>
+  <Modal animationType="fade" transparent={true} visible={props.openMenu}>
+    <ImageBackground source={imageBgAll} style={styles.centeredView}>
+      <Text style={styles.modalText}>PAUSE</Text>
+      <TouchableOpacity
+        style={styles.openButton}
+        onPress={() => props.openMenuModal()}>
+        <Image
+          source={arrowRigth}
+          style={styles.arrowRigthIcon}
+          resizeMode="contain"
+        />
+        <Text style={styles.textStyle}>RESUME GAME</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.openButton}
+        onPress={() => {
+          props.exitToStart();
+          props.nav.push('Find Differences');
+        }}>
+        <Image
+          source={arrowRigth}
+          style={styles.arrowRigthIcon}
+          resizeMode="contain"
+        />
+        <Text style={styles.textStyle}>QIUTE GAME</Text>
+      </TouchableOpacity>
+    </ImageBackground>
   </Modal>
 );
 
@@ -65,17 +66,21 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   openButton: {
-    backgroundColor: '#F194FF',
+    flexDirection: 'row',
     borderRadius: 20,
     padding: 10,
     elevation: 2,
   },
   textStyle: {
     color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
+    fontFamily: 'LuckiestGuy-Regular',
+    fontSize: 25,
+    textAlign: 'left',
   },
   modalText: {
+    color: 'white',
+    fontFamily: 'LuckiestGuy-Regular',
+    fontSize: 30,
     marginBottom: 15,
     textAlign: 'center',
   },
@@ -85,5 +90,9 @@ const styles = StyleSheet.create({
     left: 0,
     bottom: 0,
     right: 0,
+  },
+  arrowRigthIcon: {
+    width: 30,
+    height: 30,
   },
 });

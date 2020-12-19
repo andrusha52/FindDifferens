@@ -7,14 +7,15 @@ import {
   Image,
   ImageBackground,
 } from 'react-native';
-import gameDate from './../imageGames/GameData';
+import gameDate from '../imageGames/GameData';
 import {connect} from 'react-redux';
 import {setGameLVL, setTimerIsOver, setLevelHard} from '../redux/reducer';
-import {AdMobBanner, AdMobRewarded, PublisherBanner} from 'react-native-admob';
 import ModalScreenMenuStart from './ModalScreenMenuStart';
-
-const imageBG = require('../imageGames/start.jpg');
-const menuImage = require('../imageGames/icon/orange-menu.png');
+import imageBgAll from '../imageGames/newDesign/imageBgAll.png';
+import iconMenu from '../imageGames/newDesign/StartScreen/iconMenu.png';
+import logo from '../imageGames/newDesign/StartScreen/Logo.png';
+import lupa from '../imageGames/newDesign/StartScreen/lupa.png';
+import StartButton from './StartComponents/StartButton';
 
 const initState = {
   openModal: false,
@@ -35,11 +36,7 @@ class StartScreen extends Component {
     this.setLevelSelector();
   }
   pressStart() {
-    this.props.navigation.navigate('CategoryGames');
-  }
-  pressReward() {
-    AdMobRewarded.setAdUnitID('ca-app-pub-5202163251039749/8063464955');
-    AdMobRewarded.requestAd().then(() => AdMobRewarded.showAd());
+    this.props.navigation.push('CaterogyGames');
   }
   openMenuModal() {
     this.setState({openMenu: true});
@@ -58,58 +55,30 @@ class StartScreen extends Component {
   render() {
     const {levelHard} = this.state;
     return (
-      <ImageBackground source={imageBG} style={styles.image}>
+      <ImageBackground
+        source={imageBgAll}
+        style={[styles.image, styles.image2]}
+        resizeMode="cover">
         <View style={styles.main}>
-          <View style={styles.borderContainer}>
-            <ModalScreenMenuStart
-              openMenu={this.state.openMenu}
-              openMenuModal={this.openMenuModal.bind(this)}
-              exitToStart={this.exitToStart.bind(this)}
-              nav={this.props.navigation}
-              levelHard={levelHard}
-              setSelectedValue={this.setSelectedValue.bind(this)}
-            />
-            <View style={styles.menuContainer}>
-              <TouchableOpacity onPress={() => this.openMenuModal()}>
-                <Image
-                  source={menuImage}
-                  style={{
-                    width: 30,
-                    height: 30,
-                  }}
-                />
-              </TouchableOpacity>
-            </View>
-            <View style={styles.btnStartContainer}>
-              <TouchableOpacity
-                onPress={() => {
-                  this.props.navigation.push('CaterogyGames');
-                }}
-                style={styles.btnStart}>
-                <Text style={styles.btnStartText}>Start</Text>
-              </TouchableOpacity>
-              {/* <TouchableOpacity
-            onPress={() => {
-              this.pressReward();
-            }}
-            style={styles.btnStart}>
-            <Text>Rewart</Text>
-          </TouchableOpacity> */}
-              {/* <PublisherBanner
-            adSize="smartBannerPortrait"
-            adUnitID="ca-app-pub-5202163251039749/5906692014"
-            testDevices={[PublisherBanner.simulatorId]}
-            // onAdFailedToLoad={error => console.error(error)}
-            onAppEvent={event => console.log(event.name, event.info)}
-          /> */}
-              {/* <View style={{width: '100%'}}> */}
-              {/* <AdMobBanner
-     adSize="largeBanner"
-     adUnitID="ca-app-pub-5202163251039749/5906692014"
-     testDevices={[AdMobBanner.simulatorId]}
- /> */}
-              {/* </View> */}
-            </View>
+          <ModalScreenMenuStart
+            openMenu={this.state.openMenu}
+            openMenuModal={this.openMenuModal.bind(this)}
+            exitToStart={this.exitToStart.bind(this)}
+            nav={this.props.navigation}
+            levelHard={levelHard}
+            setSelectedValue={this.setSelectedValue.bind(this)}
+          />
+          <View style={styles.menuContainer}>
+            <TouchableOpacity onPress={() => this.openMenuModal()}>
+              <Image source={iconMenu} style={styles.iconStyle} />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.imageContainer}>
+            <Image source={logo} style={styles.logoImage} />
+            <Image source={lupa} style={styles.lupaImage} />
+            <TouchableOpacity onPress={this.pressStart.bind(this)}>
+              <StartButton />
+            </TouchableOpacity>
           </View>
         </View>
       </ImageBackground>
@@ -159,24 +128,35 @@ const styles = StyleSheet.create({
   },
   image: {
     flex: 1,
-    resizeMode: 'cover',
     justifyContent: 'center',
+  },
+  image2: {
+    padding: 20,
   },
   menuContainer: {
     position: 'absolute',
     left: '5%',
     top: '5%',
-    transform: [{rotate: '90deg'}],
   },
-  borderContainer: {
-    position: 'absolute',
-    top: 25,
-    left: 25,
-    bottom: 50,
-    right: 25,
-    opacity: 1,
-    borderWidth: 5,
-    borderColor: '#03fcec',
-    borderRadius: 5,
+  iconStyle: {
+    width: 50,
+    height: 50,
+    resizeMode: 'contain',
+  },
+  imageContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  logoImage: {
+    marginTop: 50,
+    width: 220,
+    height: 120,
+    resizeMode: 'contain',
+    marginBottom: 20,
+  },
+  lupaImage: {
+    width: 300,
+    height: 330,
+    resizeMode: 'contain',
   },
 });

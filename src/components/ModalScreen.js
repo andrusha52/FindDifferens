@@ -3,13 +3,17 @@ import {
   View,
   Button,
   BackHandler,
+  Image,
   ToastAndroid,
   ImageBackground,
   StyleSheet,
+  TouchableOpacity,
 } from 'react-native';
 import {connect} from 'react-redux';
 import {setTimerIsOver} from '../redux/reducer';
-const imageBG = require('../imageGames/bg-image.jpg');
+import imageBgAll from '../imageGames/newDesign/imageBgAll.png';
+import iconNextLvl from '../imageGames/newDesign/nextLvl.png';
+import iconArrowDone from '../imageGames/newDesign/arrowDone.png';
 
 class ModalScreen extends Component {
   state = {};
@@ -20,24 +24,20 @@ class ModalScreen extends Component {
       headerShown: false,
     });
     BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
-
-    // if (this.props.state.timerIsOVer) {
-    //   this.props.setTimerIsOver(!this.props.state.timerIsOVer);
-    // }
   }
 
   handleBackButton() {
     ToastAndroid.show('Back button is pressed', ToastAndroid.SHORT);
     return true;
   }
-  setTimer() {}
+  handleNextLvl() {
+    // this.setTimer();
+    this.props.navigation.push('PreStart_Game');
+  }
+
   render() {
-    // console.log('NEXT LVL', this.props.state.timerIsOVer);
-    // if (this.props.state.timerIsOVer) {
-    //   this.props.setTimerIsOver(!this.props.state.timerIsOVer);
-    // }
     return (
-      <ImageBackground source={imageBG} style={styles.image}>
+      <ImageBackground source={imageBgAll} style={styles.image}>
         <View
           style={{
             flex: 1,
@@ -45,17 +45,18 @@ class ModalScreen extends Component {
             alignItems: 'center',
             justifyContent: 'center',
           }}>
-          <View style={{width: 100, height: 50}}>
-            <Button
-              onPress={() => {
-                this.setTimer();
-                this.props.navigation.push('PreStart_Game');
-              }}
-              title="Next lvl"
-              color="#841584"
-              accessibilityLabel="Learn more about this purple button"
+          <TouchableOpacity onPress={this.handleNextLvl.bind(this)}>
+            <Image
+              source={iconNextLvl}
+              style={styles.done}
+              resizeMode="contain"
             />
-          </View>
+            <Image
+              source={iconArrowDone}
+              style={styles.done}
+              resizeMode="contain"
+            />
+          </TouchableOpacity>
         </View>
       </ImageBackground>
     );
@@ -80,5 +81,9 @@ const styles = StyleSheet.create({
     flex: 1,
     resizeMode: 'cover',
     justifyContent: 'center',
+  },
+  done: {
+    width: 200,
+    height: 100,
   },
 });

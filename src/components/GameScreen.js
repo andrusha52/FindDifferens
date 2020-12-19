@@ -16,13 +16,15 @@ import {setGameLVL, setTimerIsOver, setSelectLevel} from '../redux/reducer';
 import ModalScreenWrongCLick from './ModalScreenWrongCLick';
 import ModalScreenMenu from './ModalScreenMenu';
 import {ImageScreen} from './ImageScreen';
+import imageBgAll from '../imageGames/newDesign/imageBgAll.png';
+import iconPouseGame from '../imageGames/newDesign/pause.png';
+import iconLamp from '../imageGames/newDesign/lamp.png';
 
-const MAIN_COLOR = '#8a5a88'; // main screen bg
-const COLOR_TRUE_POINT = 'green'; // color check point valid color
+const MAIN_COLOR = '#fff'; // main screen bg
+const COLOR_TRUE_POINT = 'red'; // color check point valid color
 const COLOR_CIRCLE_TRUE = 'green'; // color cyrcle true click
-const GAME_CIRCLE = 'transparent';
+const GAME_CIRCLE = 'orange';
 // const GAME_CIRCLE = 'red';
-const image = require('../imageGames/bg-image.jpg');
 
 const gamePointZone = [
   {
@@ -130,13 +132,13 @@ class GameScreen extends Component {
     }
   }
   async openModalNextLVL() {
-    this.props.nav.push('Modal Greate Game');
+    await this.props.nav.push('Modal Greate Game');
     await this.setState({
       checkClick: [],
       pointGames: [...gamePointZone],
     });
-    const nextLvl = this.props.state.levelSelected + 1;
-    this.props.setSelectLevel(nextLvl);
+
+    this.props.setSelectLevel(this.props.state.levelSelected + 1);
   }
   restartLVL() {
     let arrDef = this.state.gameZone.def;
@@ -178,15 +180,12 @@ class GameScreen extends Component {
     if (checkClick.length === 5) {
       setTimeout(this.openModalNextLVL.bind(this), 500);
     }
-    console.log('pointGames', pointGames);
-    console.log('gameZone', gameZone);
-    console.log('hintCount', hintCount);
     return (
       <>
-        <ImageBackground source={image} style={styles.image}>
+        <ImageBackground source={imageBgAll} style={styles.image}>
           <View style={styles.mainScreen}>
             <View style={{paddingBottom: 10}} />
-            <View style={{position: 'absolute', top: 10, left: '40%'}}>
+            <View style={{position: 'absolute', top: 70, left: '40%'}}>
               <ModalScreenWrongCLick clickWrong={clickWrong} />
               <ModalScreenMenu
                 openMenu={openMenu}
@@ -202,7 +201,8 @@ class GameScreen extends Component {
                   this.props.setTimerIsOver(!this.props.state.timerIsOVer)
                 }
                 digitStyle={styles.countDown}
-                digitTxtStyle={{color: MAIN_COLOR}}
+                digitTxtStyle={styles.countDownText}
+                timeLabelStyle={styles.countDownTextTime}
                 timeToShow={['M', 'S']}
                 timeLabels={{m: '', s: ''}}
                 running={runTimer}
@@ -215,22 +215,18 @@ class GameScreen extends Component {
               onPress={() => this.openMenuModal()}
               style={styles.btnMenu}>
               <Image
-                style={{
-                  width: 30,
-                  height: 30,
-                }}
-                source={require('../imageGames/icon/orange-menu.png')}
+                style={styles.iconBtnControl}
+                resizeMode="contain"
+                source={iconPouseGame}
               />
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => this.openMenuModal()}
               style={styles.btnHint}>
               <Image
-                style={{
-                  width: 30,
-                  height: 30,
-                }}
-                source={require('../imageGames/icon/lamp-orange.png')}
+                style={styles.iconBtnControl}
+                source={iconLamp}
+                resizeMode="contain"
               />
               <View
                 style={{
@@ -242,7 +238,7 @@ class GameScreen extends Component {
               </View>
             </TouchableOpacity>
 
-            <View style={{position: 'absolute', top: '10%'}}>
+            <View style={{position: 'absolute', top: '16%'}}>
               <FlatList
                 horizontal={true}
                 data={pointGames}
@@ -345,30 +341,24 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   btnMenu: {
-    width: 40,
-    height: 40,
-    borderRadius: 50,
     position: 'absolute',
-    borderColor: MAIN_COLOR,
-    borderWidth: 1,
-    top: 10,
-    right: 10,
+    top: 50,
+    right: 15,
     zIndex: 10,
     alignItems: 'center',
     justifyContent: 'center',
   },
   btnHint: {
-    width: 40,
-    height: 40,
-    borderRadius: 50,
     position: 'absolute',
-    borderColor: MAIN_COLOR,
-    borderWidth: 1,
-    top: 10,
-    left: 10,
+    top: 50,
+    left: 15,
     zIndex: 10,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  iconBtnControl: {
+    width: 80,
+    height: 80,
   },
   countHint: {
     color: MAIN_COLOR,
@@ -382,9 +372,16 @@ const styles = StyleSheet.create({
     paddingTop: 3.5,
   },
   countDown: {
-    // backgroundColor: 'transparent',
     borderColor: MAIN_COLOR,
-    borderWidth: 2,
-    borderRadius: 20,
+    fontFamily: 'LuckiestGuy-Regular',
+  },
+  countDownText: {
+    color: MAIN_COLOR,
+    fontSize: 30,
+    fontFamily: 'LuckiestGuy-Regular',
+    
+  },
+  countDownTextTime: {
+    fontFamily: 'LuckiestGuy-Regular',
   },
 });

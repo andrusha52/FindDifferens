@@ -1,54 +1,61 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {
-  Modal,
   View,
   Text,
   TouchableHighlight,
   StyleSheet,
-  Alert,
+  Dimensions,
 } from 'react-native';
 import CountDown from 'react-native-countdown-component';
 import {BlurView} from '@react-native-community/blur';
 
-const ModalScreenWrongCLick = props => (
-  <Modal
-    animationType="slide"
-    transparent={true}
-    visible={props.clickWrong}
-    onRequestClose={() => {}}>
-    <BlurView
-      style={styles.absolute}
-      blurType="light"
-      blurAmount={10}
-      reducedTransparencyFallbackColor="white"
-    />
-    <View style={styles.centeredView}>
-      <View style={styles.modalView}>
-        <Text style={styles.modalText} />
-        <CountDown
-          until={5}
-          size={15}
-          onFinish={''}
-          digitStyle={{backgroundColor: '#FFF'}}
-          digitTxtStyle={{color: 'orange'}}
-          timeToShow={['M', 'S']}
-          timeLabels={{m: '', s: ''}}
-          running={true}
-          showSeparator={true}
-          separatorStyle={{color: 'orange'}}
+const ModalScreenWrongCLick = ({clickWrong}) => {
+  if (!clickWrong) {
+    return null;
+  } else {
+    return (
+      <View style={styles.containerAbsolut}>
+        <BlurView
+          style={styles.absolute}
+          blurType="light"
+          blurAmount={10}
+          reducedTransparencyFallbackColor="white"
         />
-        <TouchableHighlight
-          style={{...styles.openButton, backgroundColor: '#2196F3'}}>
-          <Text style={styles.textStyle}>ШТРАФ СЕРДЕЧКО</Text>
-        </TouchableHighlight>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText} />
+            <CountDown
+              until={5}
+              size={15}
+              onFinish={''}
+              digitStyle={{backgroundColor: '#FFF'}}
+              digitTxtStyle={{color: 'orange'}}
+              timeToShow={['M', 'S']}
+              timeLabels={{m: '', s: ''}}
+              running={true}
+              showSeparator={true}
+              separatorStyle={{color: 'orange'}}
+            />
+            <TouchableHighlight
+              style={{...styles.openButton, backgroundColor: '#2196F3'}}>
+              <Text style={styles.textStyle}>ШТРАФ СЕРДЕЧКО</Text>
+            </TouchableHighlight>
+          </View>
+        </View>
       </View>
-    </View>
-  </Modal>
-);
+    );
+  }
+};
 
 export default ModalScreenWrongCLick;
 
 const styles = StyleSheet.create({
+  containerAbsolut: {
+    position: 'absolute',
+    width: Dimensions.get('screen').width,
+    height: Dimensions.get('screen').height,
+    zIndex: 1000,
+  },
   centeredView: {
     flex: 2,
     justifyContent: 'center',
@@ -86,6 +93,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   absolute: {
+    flex: 1,
     position: 'absolute',
     top: 0,
     left: 0,

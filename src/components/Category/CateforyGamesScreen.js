@@ -14,25 +14,44 @@ import {
   Dimensions,
   ScrollView,
 } from 'react-native';
+import Carousel from 'react-native-snap-carousel';
 import {connect} from 'react-redux';
 import GameDataCategory from '../../imageGames/GameDataCategory';
 import {setSelectLevel} from '../../redux/reducer';
 import imageBgAll from '../../imageGames/newDesign/imageBgAll.png';
 import close from '../../imageGames/newDesign/back.png';
 
-const DATA = GameDataCategory;
+const DATA = [...GameDataCategory, ...GameDataCategory, ...GameDataCategory];
+const pageCount = Math.ceil(DATA.length / 6);
 
-const listItemImage = (items, setLevel, goToGame) => {
-  const {item, index} = items;
+const {width: screenWidth} = Dimensions.get('window');
+
+const listPages = data => {
+  const listGames = [...data];
+  let countPage = pageCount;
+  const result = [];
+  while (countPage > 0) {
+    result.push(listGames.slice(0, 8));
+    countPage--;
+  }
+  return result;
+};
+
+const ListItemImage = ({elem, setSelectLevel, goToGame}) => {
+  const index = DATA.findIndex(
+    item => item.imageGames.first === elem.imageGames.first,
+  );
   return (
-    <TouchableOpacity
-      style={styles.imageContainer}
-      onPress={() => {
-        setLevel(index);
-        goToGame();
-      }}>
-      <ImageBackground source={item.imageGames.first} style={styles.image} />
-    </TouchableOpacity>
+    <View>
+      <TouchableOpacity
+        style={styles.imageContainer}
+        onPress={() => {
+          setSelectLevel(index);
+          goToGame();
+        }}>
+        <ImageBackground source={elem.imageGames.first} style={styles.image} />
+      </TouchableOpacity>
+    </View>
   );
 };
 
@@ -47,6 +66,23 @@ const CategoryGames = props => {
   };
   const goToGame = () => {
     props.navigation.navigate('PreStart_Game');
+  };
+
+  const renderItem = ({item}) => {
+    return (
+      <FlatList
+        data={item}
+        renderItem={({item: elem}) => (
+          <ListItemImage
+            elem={elem}
+            setSelectLevel={props.setSelectLevel}
+            goToGame={goToGame}
+          />
+        )}
+        style={styles.containerList}
+        numColumns={2}
+      />
+    );
   };
 
   useEffect(() => {
@@ -70,19 +106,15 @@ const CategoryGames = props => {
         </TouchableOpacity>
         <View style={styles.titleCategoryContainer}>
           <Text style={styles.titleText}>DIFFERENCES FOUNDS: 0/50</Text>
-          <ScrollView horizontal={true} style={styles.containerList}>
-            <FlatList
-              data={DATA}
-              renderItem={item =>
-                listItemImage(item, props.setSelectLevel, goToGame)
-              }
-              keyExtractor={item => item.id}
-              style={styles.containerList}
-              horizontal={true}
-              maxColumns={3}
-              // numColumns={2}
+          <View>
+            <Carousel
+              sliderWidth={screenWidth}
+              sliderHeight={screenWidth + screenWidth}
+              itemWidth={screenWidth - 30}
+              data={listPages(DATA)}
+              renderItem={renderItem}
             />
-          </ScrollView>
+          </View>
         </View>
       </View>
     </ImageBackground>
@@ -102,7 +134,7 @@ export default connect(
 
 const styles = StyleSheet.create({
   containerList: {
-    height: 400,
+    width: screenWidth - 20,
     flexWrap: 'wrap',
     flexDirection: 'row',
     marginTop: '10%',

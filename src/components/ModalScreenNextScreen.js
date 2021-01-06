@@ -14,6 +14,7 @@ import {setTimerIsOver} from '../redux/reducer';
 import imageBgAll from '../imageGames/newDesign/imageBgAll.png';
 import iconNextLvl from '../imageGames/newDesign/nextLvl.png';
 import iconArrowDone from '../imageGames/newDesign/arrowDone.png';
+import iconDone from '../imageGames/newDesign/done.png';
 
 class ModalScreen extends Component {
   state = {};
@@ -31,7 +32,6 @@ class ModalScreen extends Component {
     return true;
   }
   handleNextLvl() {
-    // this.setTimer();
     this.props.navigation.push('PreStart_Game');
   }
 
@@ -46,6 +46,7 @@ class ModalScreen extends Component {
             justifyContent: 'center',
           }}>
           <TouchableOpacity onPress={this.handleNextLvl.bind(this)}>
+            <Image source={iconDone} style={styles.done} resizeMode="contain" />
             <Image
               source={iconNextLvl}
               style={styles.done}

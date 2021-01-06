@@ -3,6 +3,7 @@ const lastLVL = 'LAST_LEVEL';
 const timerOver = 'TIME_IS_OVER';
 const levelHardSelector = 'LEVEL_HARD_SELECTOR';
 const levelSelected = 'LEVEL_SELECTED';
+
 const initState = {
   arrLevel: [],
   timerIsOVer: false,

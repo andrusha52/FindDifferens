@@ -14,7 +14,7 @@ import ModalScreenMenuStart from './ModalScreenMenuStart';
 import imageBgAll from '../imageGames/newDesign/imageBgAll.png';
 import iconMenu from '../imageGames/newDesign/StartScreen/iconMenu.png';
 import logo from '../imageGames/newDesign/StartScreen/Logo.png';
-import lupa from '../imageGames/newDesign/StartScreen/lupa.png';
+import sherlok from '../imageGames/newDesign/sherlok.png'
 import StartButton from './StartComponents/StartButton';
 
 const initState = {
@@ -75,7 +75,7 @@ class StartScreen extends Component {
           </View>
           <View style={styles.imageContainer}>
             <Image source={logo} style={styles.logoImage} />
-            <Image source={lupa} style={styles.lupaImage} />
+            <Image source={sherlok} style={styles.lupaImage} resizeMode="contain"/>
             <TouchableOpacity onPress={this.pressStart.bind(this)}>
               <StartButton />
             </TouchableOpacity>
@@ -155,8 +155,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   lupaImage: {
-    width: 300,
-    height: 330,
-    resizeMode: 'contain',
+    width: 400,
+    height: 350,
   },
 });

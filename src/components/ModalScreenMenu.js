@@ -1,49 +1,65 @@
 import React from 'react';
 import {
-  Modal,
   Text,
   TouchableOpacity,
   StyleSheet,
   ImageBackground,
   Image,
+  Dimensions,
+  View,
 } from 'react-native';
 import imageBgAll from '../imageGames/newDesign/imageBgAll.png';
 import arrowRigth from '../imageGames/newDesign/arrowRight.png';
 
-const ModalScreenNextLVL = props => (
-  <Modal animationType="fade" transparent={true} visible={props.openMenu}>
-    <ImageBackground source={imageBgAll} style={styles.centeredView}>
-      <Text style={styles.modalText}>PAUSE</Text>
-      <TouchableOpacity
-        style={styles.openButton}
-        onPress={() => props.openMenuModal()}>
-        <Image
-          source={arrowRigth}
-          style={styles.arrowRigthIcon}
-          resizeMode="contain"
-        />
-        <Text style={styles.textStyle}>RESUME GAME</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.openButton}
-        onPress={() => {
-          props.exitToStart();
-          props.nav.push('Find Differences');
-        }}>
-        <Image
-          source={arrowRigth}
-          style={styles.arrowRigthIcon}
-          resizeMode="contain"
-        />
-        <Text style={styles.textStyle}>QIUTE GAME</Text>
-      </TouchableOpacity>
-    </ImageBackground>
-  </Modal>
-);
+const ModalScreenNextLVL = props => {
+  if (!props.openMenu) {
+    return null;
+  } else {
+    return (
+      <View style={styles.containerAbsolut}>
+        <ImageBackground
+          source={imageBgAll}
+          style={styles.centeredView}
+          resizeMode="stretch">
+          <Text style={styles.modalText}>PAUSE</Text>
+          <TouchableOpacity
+            style={styles.openButton}
+            onPress={() => props.openMenuModal()}>
+            <Image
+              source={arrowRigth}
+              style={styles.arrowRigthIcon}
+              resizeMode="contain"
+            />
+            <Text style={styles.textStyle}>RESUME GAME</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.openButton}
+            onPress={() => {
+              props.exitToStart();
+              props.nav.push('Find Differences');
+            }}>
+            <Image
+              source={arrowRigth}
+              style={styles.arrowRigthIcon}
+              resizeMode="contain"
+            />
+            <Text style={styles.textStyle}>QIUTE GAME</Text>
+          </TouchableOpacity>
+        </ImageBackground>
+      </View>
+    );
+  }
+};
 
 export default ModalScreenNextLVL;
 
 const styles = StyleSheet.create({
+  containerAbsolut: {
+    position: 'absolute',
+    width: Dimensions.get('screen').width,
+    height: Dimensions.get('screen').height,
+    zIndex: 1000,
+  },
   centeredView: {
     flex: 1,
     justifyContent: 'center',

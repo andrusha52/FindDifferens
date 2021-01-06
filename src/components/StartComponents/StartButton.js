@@ -1,10 +1,7 @@
 import React, {useState} from 'react';
 import {
-  Text,
-  ImageBackground,
   Image,
   StyleSheet,
-  TouchableOpacity,
 } from 'react-native';
 
 import start from '../../imageGames/newDesign/StartScreen/start.png';
@@ -15,6 +12,8 @@ import startR from '../../imageGames/newDesign/StartScreen/startR.png';
 import startT2 from '../../imageGames/newDesign/StartScreen/startT2.png';
 import startLine from '../../imageGames/newDesign/StartScreen/startLine.png';
 import startBorder from '../../imageGames/newDesign/StartScreen/startBorder.png';
+
+
 
 const dataAnim = [
   start,

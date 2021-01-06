@@ -5,7 +5,6 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  Picker,
   Image,
   ImageBackground,
 } from 'react-native';
@@ -15,6 +14,7 @@ import ON from '../imageGames/newDesign/StartMenu/On.png';
 import OFF from '../imageGames/newDesign/StartMenu/Off.png';
 import LikeIcon from '../imageGames/newDesign/StartMenu/like.png';
 import MailIcon from '../imageGames/newDesign/StartMenu/mail.png';
+import SelectedHard from './SelectedHard';
 
 const ModalScreenMenuStart = props => {
   const [soundFlag, setSoundFlag] = useState(false);
@@ -30,7 +30,8 @@ const ModalScreenMenuStart = props => {
       animationType="fade"
       transparent={true}
       visible={props.openMenu}
-      onRequestClose={() => {}}>
+      onRequestClose={() => {}}
+      presentationStyle="fullScreen">
       <BlurView
         style={styles.absolute}
         blurType="light"
@@ -47,17 +48,17 @@ const ModalScreenMenuStart = props => {
             <Image source={close} style={styles.iconClose} />
           </TouchableOpacity>
           <Text style={styles.modalText}>SETTINGS</Text>
-          <View style={styles.selectorContainer}>
-            <Picker
-              selectedValue={props.levelHard.toString()}
-              style={styles.picketStyle}
-              onValueChange={itemValue => props.setSelectedValue(itemValue)}>
-              <Picker.Item label="легкий (5мин)" value="5" />
-              <Picker.Item label="средний (2мин)" value="2" />
-              <Picker.Item label="сложный (1мин)" value="1" />
-            </Picker>
-          </View>
+
           <View>
+            <View style={styles.separator} />
+            <SelectedHard
+              levelHard={props.levelHard}
+              onChange={props.setSelectedValue}
+            />
+          </View>
+
+          <View>
+            <View style={styles.separator} />
             <View style={styles.flagContainer}>
               <Text style={styles.titleFlag}>SOUND</Text>
               <TouchableOpacity onPress={changeFlagSound} activeOpacity={0.9}>
@@ -78,6 +79,7 @@ const ModalScreenMenuStart = props => {
                 />
               </TouchableOpacity>
             </View>
+            <View style={styles.separator} />
             <View style={styles.linkContainer}>
               <View style={styles.flagContainer}>
                 <Text style={styles.linkText}>FEEDBACK</Text>
@@ -124,10 +126,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     right: 0,
   },
-  selectorContainer: {
-    marginBottom: 20,
-  },
-  picketStyle: {height: 30, width: 220, color: 'white'},
+
   iconCloseContainer: {
     position: 'absolute',
     left: 10,
@@ -138,9 +137,9 @@ const styles = StyleSheet.create({
     height: 25,
   },
   modalText: {
+    fontFamily: 'LuckiestGuy-Regular',
     color: 'orange',
-    fontSize: 40,
-    fontWeight: 'bold',
+    fontSize: 50,
   },
   flagContainer: {
     width: 250,
@@ -149,15 +148,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   titleFlag: {
+    fontFamily: 'LuckiestGuy-Regular',
     color: 'white',
     fontSize: 30,
-    fontWeight: '700',
   },
   iconFlag: {width: 70, height: 32, resizeMode: 'contain'},
   linkText: {
+    fontFamily: 'LuckiestGuy-Regular',
     color: 'white',
     fontSize: 25,
-    fontWeight: '700',
   },
   linkIcon: {
     width: 50,
@@ -165,6 +164,14 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   linkContainer: {
-    marginTop: 100,
+    margin: 20,
+  },
+  separator: {
+    height: 2,
+    backgroundColor: 'white',
+    borderColor: 'white',
+    borderWidth: 2,
+    marginVertical: 20,
+    borderRadius: 20,
   },
 });

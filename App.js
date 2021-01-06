@@ -7,7 +7,7 @@ import {PersistGate} from 'redux-persist/integration/react';
 import {persistor} from './src/redux/store';
 import store from './src/redux/store';
 import StartScreen from './src/components/StartScreen';
-import ModalScreen from './src/components/ModalScreen';
+import ModalScreen from './src/components/ModalScreenNextScreen';
 import PreStart_Game from './src/components/PreStart_Game';
 import CategoryGames from './src/components/Category/CateforyGamesScreen';
 import {AdMobInterstitial} from 'react-native-admob';

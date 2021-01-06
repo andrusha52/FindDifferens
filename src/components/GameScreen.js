@@ -184,15 +184,15 @@ class GameScreen extends Component {
       <>
         <ImageBackground source={imageBgAll} style={styles.image}>
           <View style={styles.mainScreen}>
+            <ModalScreenWrongCLick clickWrong={clickWrong} />
+            <ModalScreenMenu
+              openMenu={openMenu}
+              openMenuModal={this.openMenuModal.bind(this)}
+              exitToStart={this.exitToStart.bind(this)}
+              nav={this.props.nav}
+            />
             <View style={{paddingBottom: 10}} />
             <View style={{position: 'absolute', top: 70, left: '40%'}}>
-              <ModalScreenWrongCLick clickWrong={clickWrong} />
-              <ModalScreenMenu
-                openMenu={openMenu}
-                openMenuModal={this.openMenuModal.bind(this)}
-                exitToStart={this.exitToStart.bind(this)}
-                nav={this.props.nav}
-              />
               <CountDown
                 until={timer * 1}
                 size={18}
@@ -379,7 +379,6 @@ const styles = StyleSheet.create({
     color: MAIN_COLOR,
     fontSize: 30,
     fontFamily: 'LuckiestGuy-Regular',
-    
   },
   countDownTextTime: {
     fontFamily: 'LuckiestGuy-Regular',

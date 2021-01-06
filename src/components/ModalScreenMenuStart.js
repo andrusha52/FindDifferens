@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {
-  Modal,
+  Dimensions,
   View,
   Text,
   TouchableOpacity,
@@ -25,81 +25,86 @@ const ModalScreenMenuStart = props => {
   const changeFlagMusic = () => {
     setMusicFlag(musicFlag => !musicFlag);
   };
-  return (
-    <Modal
-      animationType="fade"
-      transparent={true}
-      visible={props.openMenu}
-      onRequestClose={() => {}}
-      presentationStyle="fullScreen">
-      <BlurView
-        style={styles.absolute}
-        blurType="light"
-        blurAmount={5}
-        reducedTransparencyFallbackColor="white"
-      />
-      <View style={styles.centeredView}>
-        <View style={styles.modalView}>
-          <TouchableOpacity
-            style={styles.iconCloseContainer}
-            onPress={() => {
-              props.exitToStart();
-            }}>
-            <Image source={close} style={styles.iconClose} />
-          </TouchableOpacity>
-          <Text style={styles.modalText}>SETTINGS</Text>
+  if (!props.openMenu) {
+    return null;
+  } else {
+    return (
+      <View style={styles.containerAbsolut}>
+        <BlurView
+          style={styles.absolute}
+          blurType="light"
+          blurAmount={5}
+          reducedTransparencyFallbackColor="white"
+        />
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <TouchableOpacity
+              style={styles.iconCloseContainer}
+              onPress={() => {
+                props.exitToStart();
+              }}>
+              <Image source={close} style={styles.iconClose} />
+            </TouchableOpacity>
+            <Text style={styles.modalText}>SETTINGS</Text>
 
-          <View>
-            <View style={styles.separator} />
-            <SelectedHard
-              levelHard={props.levelHard}
-              onChange={props.setSelectedValue}
-            />
-          </View>
+            <View>
+              <View style={styles.separator} />
+              <SelectedHard
+                levelHard={props.levelHard}
+                onChange={props.setSelectedValue}
+              />
+            </View>
 
-          <View>
-            <View style={styles.separator} />
-            <View style={styles.flagContainer}>
-              <Text style={styles.titleFlag}>SOUND</Text>
-              <TouchableOpacity onPress={changeFlagSound} activeOpacity={0.9}>
-                <ImageBackground
-                  source={soundFlag ? ON : OFF}
-                  style={styles.iconFlag}
-                  fadeDuration={0}
-                />
-              </TouchableOpacity>
-            </View>
-            <View style={styles.flagContainer}>
-              <Text style={styles.titleFlag}>MUSIC</Text>
-              <TouchableOpacity onPress={changeFlagMusic} activeOpacity={0.9}>
-                <ImageBackground
-                  source={musicFlag ? ON : OFF}
-                  style={styles.iconFlag}
-                  fadeDuration={0}
-                />
-              </TouchableOpacity>
-            </View>
-            <View style={styles.separator} />
-            <View style={styles.linkContainer}>
+            <View>
+              <View style={styles.separator} />
               <View style={styles.flagContainer}>
-                <Text style={styles.linkText}>FEEDBACK</Text>
-                <Image source={MailIcon} style={styles.linkIcon} />
+                <Text style={styles.titleFlag}>SOUND</Text>
+                <TouchableOpacity onPress={changeFlagSound} activeOpacity={0.9}>
+                  <ImageBackground
+                    source={soundFlag ? ON : OFF}
+                    style={styles.iconFlag}
+                    fadeDuration={0}
+                  />
+                </TouchableOpacity>
               </View>
               <View style={styles.flagContainer}>
-                <Text style={styles.linkText}>RATE US</Text>
-                <Image source={LikeIcon} style={styles.linkIcon} />
+                <Text style={styles.titleFlag}>MUSIC</Text>
+                <TouchableOpacity onPress={changeFlagMusic} activeOpacity={0.9}>
+                  <ImageBackground
+                    source={musicFlag ? ON : OFF}
+                    style={styles.iconFlag}
+                    fadeDuration={0}
+                  />
+                </TouchableOpacity>
+              </View>
+              <View style={styles.separator} />
+              <View style={styles.linkContainer}>
+                <View style={styles.flagContainer}>
+                  <Text style={styles.linkText}>FEEDBACK</Text>
+                  <Image source={MailIcon} style={styles.linkIcon} />
+                </View>
+                <View style={styles.flagContainer}>
+                  <Text style={styles.linkText}>RATE US</Text>
+                  <Image source={LikeIcon} style={styles.linkIcon} />
+                </View>
               </View>
             </View>
           </View>
         </View>
       </View>
-    </Modal>
-  );
+    );
+  }
 };
 
 export default ModalScreenMenuStart;
 
 const styles = StyleSheet.create({
+  containerAbsolut: {
+    position: 'absolute',
+    width: Dimensions.get('screen').width,
+    height: Dimensions.get('screen').height,
+    zIndex: 1000,
+  },
   centeredView: {
     flex: 1,
     justifyContent: 'center',

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import GameScreen from './GameScreen';
+
 import {
   BackHandler,
   ToastAndroid,
@@ -8,6 +8,7 @@ import {
   View,
 } from 'react-native';
 import ModalTimeOver from './ModalTimeOver';
+import GameScreen from './GameScreenComponent';
 import {connect} from 'react-redux';
 import {NativeModules} from 'react-native';
 

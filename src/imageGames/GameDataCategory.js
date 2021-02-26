@@ -17,7 +17,6 @@ export default [
         def11: {
           left: '15%',
           top: '84%',
-          borderColor: 'green',
         },
       },
       {
@@ -25,7 +24,6 @@ export default [
         def11: {
           left: '16%',
           top: '19%',
-          borderColor: 'green',
         },
       },
       {
@@ -43,6 +41,7 @@ export default [
         },
       },
     ],
+    done: true,
   },
   {
     imageGames: {
@@ -62,7 +61,6 @@ export default [
         def11: {
           left: '22%',
           top: '52%',
-          borderColor: 'green',
         },
       },
       {
@@ -70,7 +68,6 @@ export default [
         def11: {
           left: '7%',
           top: '18%',
-          borderColor: 'green',
         },
       },
       {
@@ -88,6 +85,7 @@ export default [
         },
       },
     ],
+    done: false,
   },
   {
     imageGames: {
@@ -107,7 +105,6 @@ export default [
         def11: {
           left: '24%',
           top: '36%',
-          borderColor: 'green',
         },
       },
       {
@@ -115,7 +112,6 @@ export default [
         def11: {
           left: '8%',
           top: '5%',
-          borderColor: 'green',
         },
       },
       {
@@ -133,6 +129,7 @@ export default [
         },
       },
     ],
+    done: false,
   },
   {
     imageGames: {
@@ -152,7 +149,6 @@ export default [
         def11: {
           left: '11%',
           top: '6%',
-          borderColor: 'green',
         },
       },
       {
@@ -160,7 +156,6 @@ export default [
         def11: {
           left: '19%',
           top: '41%',
-          borderColor: 'green',
         },
       },
       {
@@ -178,6 +173,7 @@ export default [
         },
       },
     ],
+    done: false,
   },
   {
     imageGames: {
@@ -197,7 +193,6 @@ export default [
         def11: {
           left: '2%',
           top: '-3%',
-          borderColor: 'green',
         },
       },
       {
@@ -205,7 +200,6 @@ export default [
         def11: {
           left: '24.5%',
           top: '26%',
-          borderColor: 'green',
         },
       },
       {
@@ -223,6 +217,7 @@ export default [
         },
       },
     ],
+    done: false,
   },
   {
     imageGames: {
@@ -242,7 +237,6 @@ export default [
         def11: {
           left: '12%',
           top: '50%',
-          borderColor: 'green',
         },
       },
       {
@@ -250,7 +244,6 @@ export default [
         def11: {
           left: '30%',
           top: '25%',
-          borderColor: 'green',
         },
       },
       {
@@ -268,6 +261,7 @@ export default [
         },
       },
     ],
+    done: false,
   },
   {
     imageGames: {
@@ -287,7 +281,6 @@ export default [
         def11: {
           left: '3%',
           top: '67%',
-          borderColor: 'green',
         },
       },
       {
@@ -295,7 +288,6 @@ export default [
         def11: {
           left: '57%',
           top: '39%',
-          borderColor: 'green',
         },
       },
       {
@@ -313,6 +305,7 @@ export default [
         },
       },
     ],
+    done: false,
   },
   {
     imageGames: {
@@ -356,6 +349,7 @@ export default [
         },
       },
     ],
+    done: false,
   },
   {
     imageGames: {
@@ -399,6 +393,7 @@ export default [
         },
       },
     ],
+    done: false,
   },
   {
     imageGames: {
@@ -442,5 +437,6 @@ export default [
         },
       },
     ],
+    done: false,
   },
 ];

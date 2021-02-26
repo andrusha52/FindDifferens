@@ -36,7 +36,6 @@ const ModalScreenNextLVL = props => {
             style={styles.openButton}
             onPress={() => {
               props.exitToStart();
-              props.nav.push('Find Differences');
             }}>
             <Image
               source={arrowRigth}

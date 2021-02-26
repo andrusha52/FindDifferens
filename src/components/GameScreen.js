@@ -10,7 +10,6 @@ import {
   ImageBackground,
 } from 'react-native';
 import difData from './../imageGames/GameDataCategory';
-import CountDown from 'react-native-countdown-component';
 import {connect} from 'react-redux';
 import {setGameLVL, setTimerIsOver, setSelectLevel} from '../redux/reducer';
 import ModalScreenWrongCLick from './ModalScreenWrongCLick';
@@ -19,6 +18,7 @@ import {ImageScreen} from './ImageScreen';
 import imageBgAll from '../imageGames/newDesign/imageBgAll.png';
 import iconPouseGame from '../imageGames/newDesign/pause.png';
 import iconLamp from '../imageGames/newDesign/lamp.png';
+import TimerCountDown from './GameScreenComponent/TimerCountDown';
 
 const MAIN_COLOR = '#fff'; // main screen bg
 const COLOR_TRUE_POINT = 'red'; // color check point valid color
@@ -51,8 +51,6 @@ const gamePointZone = [
 
 const initState = {
   color: '',
-  wrongClickX: 0,
-  wrongClickY: 0,
   clickWrong: false,
   pointGames: [...gamePointZone],
   pointGameNumb: 0,
@@ -97,8 +95,6 @@ class GameScreen extends Component {
 
   pressScreen(e) {
     this.setState({
-      wrongClickX: e.locationX,
-      wrongClickY: e.locationY,
       clickWrong: true,
     });
     setTimeout(() => {
@@ -165,8 +161,6 @@ class GameScreen extends Component {
 
   render() {
     const {
-      wrongClickX,
-      wrongClickY,
       clickWrong,
       gameZone,
       pointGames,
@@ -193,21 +187,12 @@ class GameScreen extends Component {
             />
             <View style={{paddingBottom: 10}} />
             <View style={{position: 'absolute', top: 70, left: '40%'}}>
-              <CountDown
-                until={timer * 1}
-                size={18}
-                id={gameZone.imageGames.first}
+              <TimerCountDown
+                timer={timer}
                 onFinish={() =>
                   this.props.setTimerIsOver(!this.props.state.timerIsOVer)
                 }
-                digitStyle={styles.countDown}
-                digitTxtStyle={styles.countDownText}
-                timeLabelStyle={styles.countDownTextTime}
-                timeToShow={['M', 'S']}
-                timeLabels={{m: '', s: ''}}
-                running={runTimer}
-                showSeparator={true}
-                separatorStyle={{color: MAIN_COLOR}}
+                runTimer={runTimer}
               />
             </View>
 
@@ -259,8 +244,6 @@ class GameScreen extends Component {
                 pressScreen={this.pressScreen.bind(this)}
                 gameZone={gameZone}
                 clickWrong={clickWrong}
-                wrongClickY={wrongClickY}
-                wrongClickX={wrongClickX}
                 pressGood={this.pressGood.bind(this)}
               />
               <View style={{height: 5}} />
@@ -269,8 +252,6 @@ class GameScreen extends Component {
                 pressScreen={this.pressScreen.bind(this)}
                 gameZone={gameZone}
                 clickWrong={clickWrong}
-                wrongClickY={wrongClickY}
-                wrongClickX={wrongClickX}
                 pressGood={this.pressGood.bind(this)}
               />
             </View>

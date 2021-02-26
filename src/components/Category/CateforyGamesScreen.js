@@ -16,29 +16,33 @@ import {
 } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import {connect} from 'react-redux';
-import GameDataCategory from '../../imageGames/GameDataCategory';
+
 import {setSelectLevel} from '../../redux/reducer';
 import imageBgAll from '../../imageGames/newDesign/imageBgAll.png';
 import close from '../../imageGames/newDesign/back.png';
+import closeLvl from '../../imageGames/newDesign/close.png';
 
-const DATA = [...GameDataCategory, ...GameDataCategory, ...GameDataCategory];
-const pageCount = Math.ceil(DATA.length / 6);
+const countOnPage = 8;
 
 const {width: screenWidth} = Dimensions.get('window');
 
 const listPages = data => {
   const listGames = [...data];
+  const pageCount = Math.ceil(listGames.length / countOnPage);
   let countPage = pageCount;
   const result = [];
   while (countPage > 0) {
-    result.push(listGames.slice(0, 8));
+    result.push(listGames.slice(0, countOnPage));
+    for (let index = 0; index < countOnPage; index++) {
+      listGames.shift();
+    }
     countPage--;
   }
   return result;
 };
 
-const ListItemImage = ({elem, setSelectLevel, goToGame}) => {
-  const index = DATA.findIndex(
+const ListItemImage = ({elem, setSelectLevel, goToGame, dataList}) => {
+  const index = dataList.findIndex(
     item => item.imageGames.first === elem.imageGames.first,
   );
   return (
@@ -48,14 +52,28 @@ const ListItemImage = ({elem, setSelectLevel, goToGame}) => {
         onPress={() => {
           setSelectLevel(index);
           goToGame();
-        }}>
-        <ImageBackground source={elem.imageGames.first} style={styles.image} />
+        }}
+        disabled={!elem.done}>
+        <ImageBackground source={elem.imageGames.first} style={styles.image}>
+          {!elem.done && (
+            <View style={styles.closeContain}>
+              <Image
+                source={closeLvl}
+                style={styles.closeIcon}
+                resizeMode="center"
+              />
+            </View>
+          )}
+        </ImageBackground>
       </TouchableOpacity>
     </View>
   );
 };
 
 const CategoryGames = props => {
+  const dataList = props.state.gameLevelList;
+
+  const compliteLvlCount = dataList.filter(item => item.done).length;
   const handleBackButton = () => {
     ToastAndroid.show(
       'Для того что бы выйти , откройте МЕНЮ',
@@ -77,6 +95,7 @@ const CategoryGames = props => {
             elem={elem}
             setSelectLevel={props.setSelectLevel}
             goToGame={goToGame}
+            dataList={dataList}
           />
         )}
         style={styles.containerList}
@@ -105,13 +124,15 @@ const CategoryGames = props => {
           <Image source={close} style={styles.iconClose} />
         </TouchableOpacity>
         <View style={styles.titleCategoryContainer}>
-          <Text style={styles.titleText}>DIFFERENCES FOUNDS: 0/50</Text>
-          <View>
+          <Text style={styles.titleText}>
+            DIFFERENCES FOUNDS: {compliteLvlCount}/{dataList.length}
+          </Text>
+          <View style={styles.listContainer}>
             <Carousel
               sliderWidth={screenWidth}
               sliderHeight={screenWidth + screenWidth}
               itemWidth={screenWidth - 30}
-              data={listPages(DATA)}
+              data={listPages(dataList)}
               renderItem={renderItem}
             />
           </View>
@@ -149,6 +170,8 @@ const styles = StyleSheet.create({
   image: {
     width: 150,
     height: 100,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   imageBG: {
     flex: 1,
@@ -175,5 +198,21 @@ const styles = StyleSheet.create({
     fontFamily: 'LuckiestGuy-Regular',
     fontSize: 20,
     color: 'white',
+  },
+  closeIcon: {
+    width: 80,
+    height: 80,
+  },
+  closeContain: {
+    flex: 1,
+    width: '100%',
+    backgroundColor: 'rgba(0, 0, 0,0.8);',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  listContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

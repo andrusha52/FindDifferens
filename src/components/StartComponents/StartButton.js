@@ -1,50 +1,11 @@
-import React, {useState} from 'react';
-import {
-  Image,
-  StyleSheet,
-} from 'react-native';
+import React from 'react';
+import {Image, StyleSheet, Dimensions} from 'react-native';
 
-import start from '../../imageGames/newDesign/StartScreen/start.png';
-import startS from '../../imageGames/newDesign/StartScreen/startS.png';
-import startT from '../../imageGames/newDesign/StartScreen/startT.png';
-import startA from '../../imageGames/newDesign/StartScreen/startA.png';
-import startR from '../../imageGames/newDesign/StartScreen/startR.png';
-import startT2 from '../../imageGames/newDesign/StartScreen/startT2.png';
-import startLine from '../../imageGames/newDesign/StartScreen/startLine.png';
-import startBorder from '../../imageGames/newDesign/StartScreen/startBorder.png';
-
-
-
-const dataAnim = [
-  start,
-  startS,
-  startT,
-  startA,
-  startR,
-  startT2,
-  startLine,
-  startBorder,
-];
+import start from '../../imageGames/newDesign/StartScreen/start.gif';
 
 const StartButton = () => {
-  const [ind, setInd] = useState(0);
-  const [dataImg] = useState([...dataAnim]);
-  React.useEffect(() => {
-    const inter = setInterval(() => {
-      setInd(ind => (ind < dataImg.length - 1 ? ind + 1 : 0));
-    }, 500);
-
-    return () => {
-      clearInterval(inter);
-    };
-  }, []);
-
   return (
-    <Image
-      source={dataImg[ind]}
-      style={styles.startButton}
-      fadeDuration={0}
-    />
+    <Image source={start} style={styles.startButton} resizeMode="contain" />
   );
 };
 
@@ -52,10 +13,7 @@ export default StartButton;
 
 const styles = StyleSheet.create({
   startButton: {
-    width: 290,
-    height: 160,
-  },
-  startButtonLink: {
-    flex: 1,
+    width: Dimensions.get('screen').width * 0.6,
+    height: Dimensions.get('screen').height * 0.15,
   },
 });

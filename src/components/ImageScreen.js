@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import ImageZoom from 'react-native-image-pan-zoom';
 
-export function ImageScreen(props) {
+export const ImageScreen = props => {
   return (
     <ImageZoom
       cropWidth={350}
@@ -17,10 +17,7 @@ export function ImageScreen(props) {
       imageHeight={230}
       minScale={1}
       maxScale={2}>
-      <TouchableWithoutFeedback
-        onPress={e => {
-          props.pressScreen(e.nativeEvent);
-        }}>
+      <TouchableWithoutFeedback onPress={() => props.pressScreen()}>
         <View>
           <Image style={styles.image} source={props.images} />
           <TouchableOpacity
@@ -28,7 +25,7 @@ export function ImageScreen(props) {
               ...styles.defAll,
               ...props.gameZone.def[0].def11,
             }}
-            onPress={e => props.pressGood(e, 0)}>
+            onPress={() => props.pressGood(0)}>
             <View />
           </TouchableOpacity>
           <TouchableOpacity
@@ -36,7 +33,7 @@ export function ImageScreen(props) {
               ...styles.defAll,
               ...props.gameZone.def[1].def11,
             }}
-            onPress={e => props.pressGood(e, 1)}>
+            onPress={() => props.pressGood(1)}>
             <View />
           </TouchableOpacity>
           <TouchableOpacity
@@ -44,7 +41,7 @@ export function ImageScreen(props) {
               ...styles.defAll,
               ...props.gameZone.def[2].def11,
             }}
-            onPress={e => props.pressGood(e, 2)}>
+            onPress={() => props.pressGood(2)}>
             <View />
           </TouchableOpacity>
           <TouchableOpacity
@@ -52,7 +49,7 @@ export function ImageScreen(props) {
               ...styles.defAll,
               ...props.gameZone.def[3].def11,
             }}
-            onPress={e => props.pressGood(e, 3)}>
+            onPress={() => props.pressGood(3)}>
             <View />
           </TouchableOpacity>
           <TouchableOpacity
@@ -60,14 +57,14 @@ export function ImageScreen(props) {
               ...styles.defAll,
               ...props.gameZone.def[4].def11,
             }}
-            onPress={e => props.pressGood(e, 4)}>
+            onPress={() => props.pressGood(4)}>
             <View />
           </TouchableOpacity>
         </View>
       </TouchableWithoutFeedback>
     </ImageZoom>
   );
-}
+};
 
 const styles = StyleSheet.create({
   image: {
@@ -84,7 +81,5 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     borderWidth: 2,
     borderColor: 'transparent',
-    // borderColor: 'green',
-    // margin: 30,
   },
 });

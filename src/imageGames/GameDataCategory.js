@@ -10,6 +10,7 @@ export default [
         def11: {
           left: '81%',
           top: '27%',
+          borderColor: 'transparent',
         },
       },
       {
@@ -17,7 +18,7 @@ export default [
         def11: {
           left: '15%',
           top: '84%',
-          borderColor: 'green',
+          borderColor: 'transparent',
         },
       },
       {
@@ -25,7 +26,7 @@ export default [
         def11: {
           left: '16%',
           top: '19%',
-          borderColor: 'green',
+          borderColor: 'transparent',
         },
       },
       {
@@ -33,6 +34,7 @@ export default [
         def11: {
           left: '-1%',
           top: '54%',
+          borderColor: 'transparent',
         },
       },
       {
@@ -40,9 +42,11 @@ export default [
         def11: {
           left: '70%',
           top: '74%',
+          borderColor: 'transparent',
         },
       },
     ],
+    done: true,
   },
   {
     imageGames: {
@@ -55,6 +59,7 @@ export default [
         def11: {
           left: '77%',
           top: '64%',
+          borderColor: 'transparent',
         },
       },
       {
@@ -62,7 +67,7 @@ export default [
         def11: {
           left: '22%',
           top: '52%',
-          borderColor: 'green',
+          borderColor: 'transparent',
         },
       },
       {
@@ -70,7 +75,7 @@ export default [
         def11: {
           left: '7%',
           top: '18%',
-          borderColor: 'green',
+          borderColor: 'transparent',
         },
       },
       {
@@ -78,6 +83,7 @@ export default [
         def11: {
           left: '36%',
           top: '82%',
+          borderColor: 'transparent',
         },
       },
       {
@@ -85,9 +91,11 @@ export default [
         def11: {
           left: '33%',
           top: '57%',
+          borderColor: 'transparent',
         },
       },
     ],
+    done: false,
   },
   {
     imageGames: {
@@ -100,6 +108,7 @@ export default [
         def11: {
           left: '80%',
           top: '46%',
+          borderColor: 'transparent',
         },
       },
       {
@@ -107,7 +116,7 @@ export default [
         def11: {
           left: '24%',
           top: '36%',
-          borderColor: 'green',
+          borderColor: 'transparent',
         },
       },
       {
@@ -115,7 +124,7 @@ export default [
         def11: {
           left: '8%',
           top: '5%',
-          borderColor: 'green',
+          borderColor: 'transparent',
         },
       },
       {
@@ -123,6 +132,7 @@ export default [
         def11: {
           left: '69.5%',
           top: '80%',
+          borderColor: 'transparent',
         },
       },
       {
@@ -130,9 +140,11 @@ export default [
         def11: {
           left: '41%',
           top: '53.5%',
+          borderColor: 'transparent',
         },
       },
     ],
+    done: false,
   },
   {
     imageGames: {
@@ -145,6 +157,7 @@ export default [
         def11: {
           left: '79%',
           top: '60%',
+          borderColor: 'transparent',
         },
       },
       {
@@ -152,7 +165,7 @@ export default [
         def11: {
           left: '11%',
           top: '6%',
-          borderColor: 'green',
+          borderColor: 'transparent',
         },
       },
       {
@@ -160,7 +173,7 @@ export default [
         def11: {
           left: '19%',
           top: '41%',
-          borderColor: 'green',
+          borderColor: 'transparent',
         },
       },
       {
@@ -168,6 +181,7 @@ export default [
         def11: {
           left: '14%',
           top: '74%',
+          borderColor: 'transparent',
         },
       },
       {
@@ -175,9 +189,11 @@ export default [
         def11: {
           left: '32%',
           top: '52%',
+          borderColor: 'transparent',
         },
       },
     ],
+    done: false,
   },
   {
     imageGames: {
@@ -190,6 +206,7 @@ export default [
         def11: {
           left: '82%',
           top: '66%',
+          borderColor: 'transparent',
         },
       },
       {
@@ -197,7 +214,7 @@ export default [
         def11: {
           left: '2%',
           top: '-3%',
-          borderColor: 'green',
+          borderColor: 'transparent',
         },
       },
       {
@@ -205,7 +222,7 @@ export default [
         def11: {
           left: '24.5%',
           top: '26%',
-          borderColor: 'green',
+          borderColor: 'transparent',
         },
       },
       {
@@ -213,6 +230,7 @@ export default [
         def11: {
           left: '68%',
           top: '0%',
+          borderColor: 'transparent',
         },
       },
       {
@@ -220,9 +238,11 @@ export default [
         def11: {
           left: '39%',
           top: '59%',
+          borderColor: 'transparent',
         },
       },
     ],
+    done: false,
   },
   {
     imageGames: {
@@ -235,6 +255,7 @@ export default [
         def11: {
           left: '81%',
           top: '25%',
+          borderColor: 'transparent',
         },
       },
       {
@@ -242,7 +263,7 @@ export default [
         def11: {
           left: '12%',
           top: '50%',
-          borderColor: 'green',
+          borderColor: 'transparent',
         },
       },
       {
@@ -250,7 +271,7 @@ export default [
         def11: {
           left: '30%',
           top: '25%',
-          borderColor: 'green',
+          borderColor: 'transparent',
         },
       },
       {
@@ -258,6 +279,7 @@ export default [
         def11: {
           left: '55%',
           top: '40%',
+          borderColor: 'transparent',
         },
       },
       {
@@ -265,9 +287,11 @@ export default [
         def11: {
           left: '39%',
           top: '59%',
+          borderColor: 'transparent',
         },
       },
     ],
+    done: false,
   },
   {
     imageGames: {
@@ -280,6 +304,7 @@ export default [
         def11: {
           left: '74%',
           top: '51%',
+          borderColor: 'transparent',
         },
       },
       {
@@ -287,7 +312,7 @@ export default [
         def11: {
           left: '3%',
           top: '67%',
-          borderColor: 'green',
+          borderColor: 'transparent',
         },
       },
       {
@@ -295,7 +320,7 @@ export default [
         def11: {
           left: '57%',
           top: '39%',
-          borderColor: 'green',
+          borderColor: 'transparent',
         },
       },
       {
@@ -303,6 +328,7 @@ export default [
         def11: {
           left: '53%',
           top: '83%',
+          borderColor: 'transparent',
         },
       },
       {
@@ -310,9 +336,11 @@ export default [
         def11: {
           left: '26%',
           top: '70%',
+          borderColor: 'transparent',
         },
       },
     ],
+    done: false,
   },
   {
     imageGames: {
@@ -325,6 +353,7 @@ export default [
         def11: {
           left: '83%',
           top: '6%',
+          borderColor: 'transparent',
         },
       },
       {
@@ -332,6 +361,7 @@ export default [
         def11: {
           left: '12%',
           top: '42%',
+          borderColor: 'transparent',
         },
       },
       {
@@ -339,6 +369,7 @@ export default [
         def11: {
           left: '-3%',
           top: '31%',
+          borderColor: 'transparent',
         },
       },
       {
@@ -346,6 +377,7 @@ export default [
         def11: {
           left: '85%',
           top: '69%',
+          borderColor: 'transparent',
         },
       },
       {
@@ -353,9 +385,11 @@ export default [
         def11: {
           left: '46%',
           top: '82%',
+          borderColor: 'transparent',
         },
       },
     ],
+    done: false,
   },
   {
     imageGames: {
@@ -368,6 +402,7 @@ export default [
         def11: {
           left: '45%',
           top: '9%',
+          borderColor: 'transparent',
         },
       },
       {
@@ -375,6 +410,7 @@ export default [
         def11: {
           left: '36%',
           top: '55%',
+          borderColor: 'transparent',
         },
       },
       {
@@ -382,6 +418,7 @@ export default [
         def11: {
           left: '19%',
           top: '15%',
+          borderColor: 'transparent',
         },
       },
       {
@@ -389,6 +426,7 @@ export default [
         def11: {
           left: '67.5%',
           top: '56%',
+          borderColor: 'transparent',
         },
       },
       {
@@ -396,9 +434,11 @@ export default [
         def11: {
           left: '24%',
           top: '57%',
+          borderColor: 'transparent',
         },
       },
     ],
+    done: false,
   },
   {
     imageGames: {
@@ -411,6 +451,7 @@ export default [
         def11: {
           left: '45%',
           top: '9%',
+          borderColor: 'transparent',
         },
       },
       {
@@ -418,6 +459,7 @@ export default [
         def11: {
           left: '36%',
           top: '55%',
+          borderColor: 'transparent',
         },
       },
       {
@@ -425,6 +467,7 @@ export default [
         def11: {
           left: '19%',
           top: '15%',
+          borderColor: 'transparent',
         },
       },
       {
@@ -432,6 +475,7 @@ export default [
         def11: {
           left: '67.5%',
           top: '56%',
+          borderColor: 'transparent',
         },
       },
       {
@@ -439,8 +483,10 @@ export default [
         def11: {
           left: '24%',
           top: '57%',
+          borderColor: 'transparent',
         },
       },
     ],
+    done: false,
   },
 ];

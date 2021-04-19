@@ -1,7 +1,6 @@
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import {
   BackHandler,
-  ToastAndroid,
   StatusBar,
   Image,
   View,
@@ -12,78 +11,91 @@ import {
   NativeModules,
   TouchableOpacity,
   Dimensions,
-  ScrollView,
 } from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import Carousel from 'react-native-snap-carousel';
-import {connect} from 'react-redux';
-import GameDataCategory from '../../imageGames/GameDataCategory';
-import {setSelectLevel} from '../../redux/reducer';
-import imageBgAll from '../../imageGames/newDesign/imageBgAll.png';
-import close from '../../imageGames/newDesign/back.png';
 
-const DATA = [...GameDataCategory, ...GameDataCategory, ...GameDataCategory];
-const pageCount = Math.ceil(DATA.length / 6);
+import {setSelectLevel} from '../../redux/reducer';
+
+import close from '../../imageGames/newDesign/back.png';
+import closeLvl from '../../imageGames/newDesign/close.png';
+import BgWrapper from '../BgWrapper';
+
+const countOnPage = 8;
 
 const {width: screenWidth} = Dimensions.get('window');
 
 const listPages = data => {
   const listGames = [...data];
+  const pageCount = Math.ceil(listGames.length / countOnPage);
   let countPage = pageCount;
   const result = [];
   while (countPage > 0) {
-    result.push(listGames.slice(0, 8));
+    result.push(listGames.slice(0, countOnPage));
+    for (let index = 0; index < countOnPage; index++) {
+      listGames.shift();
+    }
     countPage--;
   }
   return result;
 };
 
-const ListItemImage = ({elem, setSelectLevel, goToGame}) => {
-  const index = DATA.findIndex(
-    item => item.imageGames.first === elem.imageGames.first,
-  );
+const ListItemImage = ({index, goToGame, elem}) => {
+  const dispatch = useDispatch();
+  if (!elem.imageGames) {
+    return null;
+  }
   return (
     <View>
       <TouchableOpacity
         style={styles.imageContainer}
         onPress={() => {
-          setSelectLevel(index);
+          dispatch(setSelectLevel(index));
           goToGame();
-        }}>
-        <ImageBackground source={elem.imageGames.first} style={styles.image} />
+        }}
+        disabled={!elem.done}>
+        <ImageBackground source={elem.imageGames.first} style={styles.image}>
+          {!elem.done && (
+            <View style={styles.closeContain}>
+              <Image
+                source={closeLvl}
+                style={styles.closeIcon}
+                resizeMode="center"
+              />
+            </View>
+          )}
+        </ImageBackground>
       </TouchableOpacity>
     </View>
   );
 };
 
 const CategoryGames = props => {
-  const handleBackButton = () => {
-    ToastAndroid.show(
-      'Для того что бы выйти , откройте МЕНЮ',
-      ToastAndroid.SHORT,
-    );
+  const dataList = useSelector(localState => localState.gameLevelList);
 
+  const compliteLvlCount = dataList.filter(item => item.done).length;
+  const handleBackButton = () => {
     return true;
   };
-  const goToGame = () => {
+  const goToGame = useCallback(() => {
     props.navigation.navigate('PreStart_Game');
-  };
+  }, [props.navigation]);
 
-  const renderItem = ({item}) => {
-    return (
-      <FlatList
-        data={item}
-        renderItem={({item: elem}) => (
-          <ListItemImage
-            elem={elem}
-            setSelectLevel={props.setSelectLevel}
-            goToGame={goToGame}
-          />
-        )}
-        style={styles.containerList}
-        numColumns={2}
-      />
-    );
-  };
+  const renderItem = useCallback(
+    ({item}) => {
+      return (
+        <FlatList
+          data={item}
+          renderItem={({item: elem, index}) => (
+            <ListItemImage elem={elem} index={index} goToGame={goToGame} />
+          )}
+          style={styles.containerList}
+          numColumns={2}
+        />
+      );
+    },
+    [goToGame],
+  );
 
   useEffect(() => {
     NativeModules.NavigationBarColor.hideNavigationBar();
@@ -93,48 +105,44 @@ const CategoryGames = props => {
     });
 
     BackHandler.addEventListener('hardwareBackPress', handleBackButton);
-  }, []);
-  return (
-    <ImageBackground source={imageBgAll} style={styles.imageBG}>
-      <View style={{width: '100%', height: '100%'}}>
-        <StatusBar hidden={true} />
+  }, [props.navigation]);
+  return useMemo(
+    () => (
+      <BgWrapper>
+        <View style={{width: '100%', height: '100%'}}>
+          <StatusBar hidden={true} />
 
-        <TouchableOpacity
-          onPress={() => props.navigation.goBack()}
-          style={styles.btnBack}>
-          <Image source={close} style={styles.iconClose} />
-        </TouchableOpacity>
-        <View style={styles.titleCategoryContainer}>
-          <Text style={styles.titleText}>DIFFERENCES FOUNDS: 0/50</Text>
-          <View>
-            <Carousel
-              sliderWidth={screenWidth}
-              sliderHeight={screenWidth + screenWidth}
-              itemWidth={screenWidth - 30}
-              data={listPages(DATA)}
-              renderItem={renderItem}
-            />
+          <TouchableOpacity
+            onPress={() => props.navigation.goBack()}
+            style={styles.btnBack}>
+            <Image source={close} style={styles.iconClose} />
+          </TouchableOpacity>
+          <View style={styles.titleCategoryContainer}>
+            <Text style={styles.titleText}>
+              DIFFERENCES FOUNDS: {compliteLvlCount}/{dataList.length}
+            </Text>
+            <View style={styles.listContainer}>
+              <Carousel
+                sliderWidth={screenWidth - 50}
+                sliderHeight={screenWidth + screenWidth}
+                itemWidth={screenWidth - 30}
+                data={listPages(dataList)}
+                renderItem={renderItem}
+              />
+            </View>
           </View>
         </View>
-      </View>
-    </ImageBackground>
+      </BgWrapper>
+    ),
+    [compliteLvlCount, dataList, props.navigation, renderItem],
   );
 };
 
-const mstp = state => ({
-  state: state,
-});
-const mapDispatchToProps = {
-  setSelectLevel: setSelectLevel,
-};
-export default connect(
-  mstp,
-  mapDispatchToProps,
-)(CategoryGames);
+export default CategoryGames;
 
 const styles = StyleSheet.create({
   containerList: {
-    width: screenWidth - 20,
+    width: screenWidth,
     flexWrap: 'wrap',
     flexDirection: 'row',
     marginTop: '10%',
@@ -149,16 +157,17 @@ const styles = StyleSheet.create({
   image: {
     width: 150,
     height: 100,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   imageBG: {
     flex: 1,
-    resizeMode: 'cover',
     justifyContent: 'center',
   },
   btnBack: {
     position: 'absolute',
-    left: '5%',
-    top: '7%',
+    left: '8%',
+    top: '5%',
   },
   iconClose: {
     width: 25,
@@ -175,5 +184,25 @@ const styles = StyleSheet.create({
     fontFamily: 'LuckiestGuy-Regular',
     fontSize: 20,
     color: 'white',
+  },
+  closeIcon: {
+    width: 80,
+    height: 80,
+  },
+  closeContain: {
+    flex: 1,
+    width: '100%',
+    backgroundColor: 'rgba(0, 0, 0,0.8);',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  listContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  bgLine: {
+    width: '100%',
+    height: '100%',
   },
 });

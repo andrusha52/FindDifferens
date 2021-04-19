@@ -1,21 +1,20 @@
 import React, {Component} from 'react';
 import {
   View,
-  Text,
   StyleSheet,
   TouchableOpacity,
   Image,
   ImageBackground,
 } from 'react-native';
-import gameDate from '../imageGames/GameData';
 import {connect} from 'react-redux';
 import {setGameLVL, setTimerIsOver, setLevelHard} from '../redux/reducer';
 import ModalScreenMenuStart from './ModalScreenMenuStart';
 import imageBgAll from '../imageGames/newDesign/imageBgAll.png';
 import iconMenu from '../imageGames/newDesign/StartScreen/iconMenu.png';
 import logo from '../imageGames/newDesign/StartScreen/Logo.png';
-import sherlok from '../imageGames/newDesign/sherlok.png'
+import sherlok from '../imageGames/newDesign/sherlok.png';
 import StartButton from './StartComponents/StartButton';
+import BgWrapper from './BgWrapper';
 
 const initState = {
   openModal: false,
@@ -25,7 +24,6 @@ const initState = {
 
 class StartScreen extends Component {
   state = {
-    gameAllLvl: [...gameDate],
     ...initState,
   };
   componentDidMount() {
@@ -55,10 +53,7 @@ class StartScreen extends Component {
   render() {
     const {levelHard} = this.state;
     return (
-      <ImageBackground
-        source={imageBgAll}
-        style={[styles.image, styles.image2]}
-        resizeMode="cover">
+      <BgWrapper>
         <View style={styles.main}>
           <ModalScreenMenuStart
             openMenu={this.state.openMenu}
@@ -70,18 +65,30 @@ class StartScreen extends Component {
           />
           <View style={styles.menuContainer}>
             <TouchableOpacity onPress={() => this.openMenuModal()}>
-              <Image source={iconMenu} style={styles.iconStyle} />
+              <Image
+                source={iconMenu}
+                style={styles.iconStyle}
+                resizeMode="contain"
+              />
             </TouchableOpacity>
           </View>
           <View style={styles.imageContainer}>
-            <Image source={logo} style={styles.logoImage} />
-            <Image source={sherlok} style={styles.lupaImage} resizeMode="contain"/>
+            <Image
+              source={logo}
+              style={styles.logoImage}
+              resizeMode="contain"
+            />
+            <Image
+              source={sherlok}
+              style={styles.lupaImage}
+              resizeMode="contain"
+            />
             <TouchableOpacity onPress={this.pressStart.bind(this)}>
               <StartButton />
             </TouchableOpacity>
           </View>
         </View>
-      </ImageBackground>
+      </BgWrapper>
     );
   }
 }
@@ -139,9 +146,8 @@ const styles = StyleSheet.create({
     top: '5%',
   },
   iconStyle: {
-    width: 50,
-    height: 50,
-    resizeMode: 'contain',
+    width: 40,
+    height: 40,
   },
   imageContainer: {
     alignItems: 'center',
@@ -151,7 +157,6 @@ const styles = StyleSheet.create({
     marginTop: 50,
     width: 220,
     height: 120,
-    resizeMode: 'contain',
     marginBottom: 20,
   },
   lupaImage: {

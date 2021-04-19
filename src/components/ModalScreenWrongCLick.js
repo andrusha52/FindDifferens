@@ -1,13 +1,8 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  TouchableHighlight,
-  StyleSheet,
-  Dimensions,
-} from 'react-native';
+import {View, StyleSheet, Dimensions, Image} from 'react-native';
 import CountDown from 'react-native-countdown-component';
 import {BlurView} from '@react-native-community/blur';
+import errorCLick from '../imageGames/newDesign/heartBreak.gif';
 
 const ModalScreenWrongCLick = ({clickWrong}) => {
   if (!clickWrong) {
@@ -23,12 +18,16 @@ const ModalScreenWrongCLick = ({clickWrong}) => {
         />
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text style={styles.modalText} />
+            <Image
+              source={errorCLick}
+              resizeMode="contain"
+              style={styles.iconHeart}
+            />
             <CountDown
               until={5}
               size={15}
               onFinish={''}
-              digitStyle={{backgroundColor: '#FFF'}}
+              digitStyle={{backgroundColor: 'rgb(5,29,49)'}}
               digitTxtStyle={{color: 'orange'}}
               timeToShow={['M', 'S']}
               timeLabels={{m: '', s: ''}}
@@ -36,10 +35,6 @@ const ModalScreenWrongCLick = ({clickWrong}) => {
               showSeparator={true}
               separatorStyle={{color: 'orange'}}
             />
-            <TouchableHighlight
-              style={{...styles.openButton, backgroundColor: '#2196F3'}}>
-              <Text style={styles.textStyle}>ШТРАФ СЕРДЕЧКО</Text>
-            </TouchableHighlight>
           </View>
         </View>
       </View>
@@ -64,7 +59,7 @@ const styles = StyleSheet.create({
   },
   modalView: {
     margin: 20,
-    backgroundColor: 'white',
+    backgroundColor: 'rgb(5,29,49)',
     borderRadius: 20,
     padding: 35,
     alignItems: 'center',
@@ -83,11 +78,7 @@ const styles = StyleSheet.create({
     padding: 10,
     elevation: 2,
   },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
+
   modalText: {
     marginBottom: 15,
     textAlign: 'center',
@@ -99,5 +90,9 @@ const styles = StyleSheet.create({
     left: 0,
     bottom: 0,
     right: 0,
+  },
+  iconHeart: {
+    width: 100,
+    height: 100,
   },
 });

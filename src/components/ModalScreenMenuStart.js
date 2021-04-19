@@ -101,9 +101,10 @@ export default ModalScreenMenuStart;
 const styles = StyleSheet.create({
   containerAbsolut: {
     position: 'absolute',
-    width: Dimensions.get('screen').width,
-    height: Dimensions.get('screen').height,
+    width: Dimensions.get('screen').width + 50,
+    height: Dimensions.get('screen').height + 50,
     zIndex: 1000,
+    marginTop: -50,
   },
   centeredView: {
     flex: 1,

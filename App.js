@@ -1,5 +1,7 @@
 import 'react-native-gesture-handler';
 import * as React from 'react';
+import {useEffect} from 'react';
+import {StatusBar, LogBox} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {Provider} from 'react-redux';
@@ -8,16 +10,19 @@ import {persistor} from './src/redux/store';
 import store from './src/redux/store';
 import StartScreen from './src/components/StartScreen';
 import ModalScreen from './src/components/ModalScreenNextScreen';
+import ModalTimeOver from './src/components/ModalTimeOver';
 import PreStart_Game from './src/components/PreStart_Game';
 import CategoryGames from './src/components/Category/CateforyGamesScreen';
 import {AdMobInterstitial} from 'react-native-admob';
-import {useEffect} from 'react';
 
 const Stack = createStackNavigator();
 
 function MyStack() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}>
       <Stack.Screen
         name="Find Differences"
         component={StartScreen}
@@ -38,9 +43,18 @@ function MyStack() {
         component={ModalScreen}
         options={{title: ''}}
       />
+      <Stack.Screen
+        name="Modal time Over"
+        component={ModalTimeOver}
+        options={{title: ''}}
+        screenOptions={{
+          headerShown: false,
+        }}
+      />
     </Stack.Navigator>
   );
 }
+LogBox.ignoreLogs(['Warning: ...', 'ERROR']);
 
 const App = () => {
   useEffect(() => {
@@ -53,6 +67,7 @@ const App = () => {
       <PersistGate loading={null} persistor={persistor}>
         <NavigationContainer>
           <MyStack />
+          <StatusBar hidden />
         </NavigationContainer>
       </PersistGate>
     </Provider>

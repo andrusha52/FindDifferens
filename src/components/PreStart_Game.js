@@ -1,54 +1,39 @@
-import React, {Component} from 'react';
-import GameScreen from './GameScreen';
+import React from 'react';
+
 import {
   BackHandler,
-  ToastAndroid,
   StatusBar,
-  Dimensions,
   View,
+  NativeModules,
+  StyleSheet,
 } from 'react-native';
-import ModalTimeOver from './ModalTimeOver';
-import {connect} from 'react-redux';
-import {NativeModules} from 'react-native';
+import GameScreen from './GameScreenComponent';
 
-class PreStart_Game extends Component {
-  state = {timeOver: false};
-  componentDidMount() {
+const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+    height: '100%',
+  },
+});
+const PreStart_Game = ({navigation}) => {
+  const handleBackButton = () => {
+    return true;
+  };
+  React.useEffect(() => {
     NativeModules.NavigationBarColor.hideNavigationBar();
-    this.props.navigation.setOptions({
+    navigation.setOptions({
       headerLeft: () => '',
       headerShown: false,
     });
 
-    BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
-  }
-  handleBackButton() {
-    ToastAndroid.show(
-      'Для того что бы выйти , откройте МЕНЮ',
-      ToastAndroid.SHORT,
-    );
+    BackHandler.addEventListener('hardwareBackPress', handleBackButton);
+  }, [navigation]);
+  return (
+    <View style={styles.container}>
+      <StatusBar hidden={true} />
+      <GameScreen nav={navigation} />
+    </View>
+  );
+};
 
-    return true;
-  }
-
-  render() {
-    return (
-      <View style={{width: '100%', height: '100%'}}>
-        <StatusBar hidden={true} />
-        {!this.props.state.timerIsOVer ? (
-          <GameScreen nav={this.props.navigation} />
-        ) : (
-          <ModalTimeOver nav={this.props.navigation} />
-        )}
-      </View>
-    );
-  }
-}
-const mstp = state => ({
-  state: state,
-});
-
-export default connect(
-  mstp,
-  null,
-)(PreStart_Game);
+export default PreStart_Game;

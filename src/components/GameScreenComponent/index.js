@@ -1,29 +1,21 @@
-import React, {useMemo, useState, useEffect} from 'react';
-import {
-  View,
-  Image,
-  TouchableOpacity,
-  FlatList,
-  Text,
-  ImageBackground,
-} from 'react-native';
+import React, {useMemo, useState, useEffect, useCallback} from 'react';
+import {View, Image, TouchableOpacity, FlatList, Text} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {
-  setTimerIsOver,
+  setHitCount,
   setGameNextLevel,
   setSelectLevel,
-  setHitCount,
 } from '../../redux/reducer';
+import CountDown from 'react-native-countdown-component';
 import ModalScreenWrongCLick from '../ModalScreenWrongCLick';
 import ModalScreenMenu from '../ModalScreenMenu';
 import {ImageScreen} from '../ImageScreen';
 
-import imageBgAll from '../../imageGames/newDesign/imageBgAll.png';
 import iconPouseGame from '../../imageGames/newDesign/pause.png';
 import iconLamp from '../../imageGames/newDesign/lamp.png';
-import TimerCountDown from './TimerCountDown';
 
 import styles from './GameScreen.style';
+import BgWrapper from '../BgWrapper';
 
 const MAIN_COLOR = '#fff'; // main screen bg
 const COLOR_TRUE_POINT = 'red'; // color check point valid color
@@ -54,135 +46,210 @@ const gamePointZone = [
   },
 ];
 
-const GameScreen = ({state, nav}) => {
+const initState = {
+  clickWrong: false,
+  openMenu: false,
+  runTimer: true,
+  pointGameNumb: 0,
+  checkClick: [],
+  init: true,
+};
+
+const GameScreen = ({nav}) => {
+  const level = useSelector(st => st.levelSelected);
+  const levelHard = useSelector(st => st.levelHard);
+  const gameLevelList = useSelector(st => st.gameLevelList);
+  const hintCount = useSelector(st => st.hintCount);
   const dispatch = useDispatch();
+  const [local, setLocal] = useState({
+    ...initState,
+    timer: levelHard,
+    pointGames: [...gamePointZone],
+    gameZone: gameLevelList[level],
+  });
 
-  const [timer, setTimer] = useState(state.levelHard);
-  const [clickWrong, setClickWrong] = useState(false);
-  const [openMenu, setOpenMenu] = useState(false);
-  const [runTimer, setRunTimer] = useState(true);
-  const [pointGames, setPointGames] = useState([...gamePointZone]);
-  const [pointGameNumb, setPointGameNumb] = useState(0);
-  const [gameZone, setGameZone] = useState(
-    state.gameLevelList[state.levelSelected],
+  const restartLVL = useCallback(
+    lvl => {
+      let arrDef = gameLevelList[lvl].def;
+      if (!arrDef) {
+        return;
+      }
+      arrDef = arrDef.map(el => {
+        el.def11 = {...el.def11, borderColor: GAME_CIRCLE};
+        return el;
+      });
+      setLocal({
+        ...initState,
+        gameZone: {...gameLevelList[lvl], def: [...arrDef]},
+        timer: levelHard,
+        pointGames: [...gamePointZone],
+      });
+    },
+    [gameLevelList, levelHard],
   );
-  const [checkClick, setCheckClick] = useState([]);
-
-  const [init, setInit] = useState(true);
-
-  const restartLVL = () => {
-    let arrDef = state.gameLevelList[state.levelSelected].def;
-    arrDef = arrDef.map(el => {
-      el.def11 = {...el.def11, borderColor: GAME_CIRCLE};
-      return el;
-    });
-    setTimer(state.levelHard);
-    setGameZone({
-      ...state.gameLevelList[state.levelSelected],
-      def: [...arrDef],
-    });
-    setPointGames([...gamePointZone]);
-    setRunTimer(true);
-    setInit(false);
-    setPointGameNumb(0);
-    setClickWrong(false);
-  };
 
   const pressScreen = () => {
-    setClickWrong(true);
-    setTimeout(() => {
-      setClickWrong(false);
+    setLocal(prev => {
+      return {...prev, clickWrong: true};
+    });
+
+    const timeOut = setTimeout(() => {
+      setLocal(prev => {
+        return {...prev, clickWrong: false};
+      });
+      clearTimeout(timeOut);
     }, 5000);
   };
 
-  const pressGood = ind => {
-    if (!checkClick.includes(ind)) {
-      const newDef = [...gameZone.def];
-      newDef[ind].def11 = {
-        ...newDef[ind].def11,
-        borderColor: COLOR_CIRCLE_TRUE,
-      };
-      const newPoint = [...pointGames];
-      newPoint[pointGameNumb] = {
-        ...pointGames[pointGameNumb],
-        colorPoint: {backgroundColor: COLOR_TRUE_POINT},
-      };
-      setGameZone(prev => {
-        return {...prev, def: [...newDef]};
-      });
-      setPointGameNumb(prev => prev + 1);
-      setPointGames([...newPoint]);
-      setCheckClick(prev => [...prev, ind]);
-    } else {
-      return;
-    }
-  };
+  const pressGood = useCallback(
+    ind => {
+      if (!local.checkClick.includes(ind)) {
+        const newDef = [...local.gameZone.def];
+        newDef[ind].def11 = {
+          ...newDef[ind].def11,
+          borderColor: COLOR_CIRCLE_TRUE,
+        };
+        const newPoint = [...local.pointGames];
+        newPoint[local.pointGameNumb] = {
+          ...local.pointGames[local.pointGameNumb],
+          colorPoint: {backgroundColor: COLOR_TRUE_POINT},
+        };
+        setLocal(prev => {
+          return {
+            ...prev,
+            gameZone: {...prev.gameZone, def: [...newDef]},
+            pointGameNumb: prev.pointGameNumb + 1,
+            pointGames: [...newPoint],
+            checkClick: [...prev.checkClick, ind],
+          };
+        });
+      } else {
+        return;
+      }
+    },
+    [
+      local.checkClick,
+      local.gameZone.def,
+      local.pointGameNumb,
+      local.pointGames,
+    ],
+  );
 
-  const openModalNextLVL = async () => {
-    setCheckClick([]);
-    setPointGames([...gamePointZone]);
-    dispatch(setSelectLevel(state.levelSelected + 1));
-    dispatch(setGameNextLevel(state.levelSelected + 1));
+  const openModalNextLVL = useCallback(async () => {
+    setLocal(prev => {
+      return {
+        ...prev,
+        checkClick: [],
+        pointGames: [...gamePointZone],
+      };
+    });
+    const timeOut = setTimeout(() => {
+      dispatch(setSelectLevel(level + 1));
+      dispatch(setGameNextLevel(level + 1));
+      clearTimeout(timeOut);
+    }, 300);
     await nav.push('Modal Greate Game');
-  };
+  }, [dispatch, level, nav]);
 
-  const exitToStart = () => {
-    setOpenMenu(prev => !prev);
-    setInit(true);
+  const exitToStart = useCallback(() => {
+    setLocal(prev => {
+      return {
+        ...prev,
+        openMenu: !prev.openMenu,
+        init: true,
+      };
+    });
+
     nav.push('Find Differences');
-  };
+    restartLVL(level);
+  }, [nav, restartLVL, level]);
   const openMenuModal = () => {
-    setOpenMenu(prev => !prev);
-    setRunTimer(prev => !prev);
-  };
-
-  if (checkClick.length === 5) {
-    setTimeout(openModalNextLVL, 500);
-  
-  }
-
-  const onFinishTime = () => {
-    dispatch(setTimerIsOver(!state.timerIsOVer));
-  };
-
-  const onGetHint = () => {
-    dispatch(setHitCount(state.hintCount - 1));
-    const ind = checkClick.length;
-    const newDef = [...gameZone.def];
-    newDef[ind].def11 = {
-      ...newDef[ind].def11,
-      borderColor: HIST_COLOR,
-    };
-    setGameZone(prev => {
-      return {...prev, def: newDef};
+    setLocal(prev => {
+      return {
+        ...prev,
+        openMenu: !prev.openMenu,
+        runTimer: !prev.runTimer,
+      };
     });
   };
 
+  const onGetHint = useCallback(() => {
+    dispatch(setHitCount(hintCount - 1));
+
+    const def = [...local.gameZone.def];
+    const ind = def.findIndex(item => item.def11.borderColor === 'transparent');
+    const notClickHint = def.findIndex(
+      item => item.def11.borderColor === HIST_COLOR,
+    );
+    if (ind < 0 || notClickHint >= 0) {
+      return;
+    }
+    def[ind].def11 = {
+      ...def[ind].def11,
+      borderColor: HIST_COLOR,
+    };
+    setLocal(prev => {
+      return {
+        ...prev,
+        gameZone: {
+          ...prev.gameZone,
+          def: [...def],
+        },
+      };
+    });
+  }, [dispatch, hintCount, local.gameZone.def]);
+
+  const onFinish = useCallback(async () => {
+    restartLVL(level);
+    await nav.push('Modal time Over');
+  }, [nav, restartLVL, level]);
+
   useEffect(() => {
-    if (init) {
-      restartLVL();
+    if (!local.init) {
+      restartLVL(level);
     }
     return () => {
-      restartLVL();
+      restartLVL(level);
     };
-  }, [state.levelSelected, state.levelHard]);
-  return (
-    <>
-      <ImageBackground source={imageBgAll} style={styles.image}>
+  }, [restartLVL, level, local.init, gameLevelList]);
+
+  useEffect(() => {
+    setLocal(prev => {
+      return {
+        ...prev,
+        gameZone: gameLevelList[level],
+      };
+    });
+    restartLVL(level);
+  }, [gameLevelList, level, restartLVL]);
+  if (local.checkClick.length === 5) {
+    setTimeout(openModalNextLVL, 500);
+  }
+  return useMemo(
+    () => (
+      <BgWrapper>
         <View style={styles.mainScreen}>
-          <ModalScreenWrongCLick clickWrong={clickWrong} />
+          <ModalScreenWrongCLick clickWrong={local.clickWrong} />
           <ModalScreenMenu
-            openMenu={openMenu}
+            openMenu={local.openMenu}
             openMenuModal={openMenuModal}
             exitToStart={exitToStart}
             nav={nav}
           />
           <View style={{paddingBottom: 10}} />
-          <View style={{position: 'absolute', top: 70, left: '40%'}}>
-            <TimerCountDown
-              timer={timer}
-              onFinish={onFinishTime}
-              runTimer={runTimer}
+          <View style={{position: 'absolute', top: 40, left: '40%'}}>
+            <CountDown
+              until={local.timer * 60}
+              size={15}
+              onFinish={onFinish}
+              id={local.gameZone.imageGames.first}
+              digitStyle={{backgroundColor: 'transparent'}}
+              digitTxtStyle={[styles.countDownText, {color: 'red'}]}
+              timeToShow={['M', 'S']}
+              timeLabels={{m: '', s: ''}}
+              running={local.runTimer}
+              showSeparator={true}
+              separatorStyle={{color: 'red'}}
             />
           </View>
 
@@ -199,20 +266,15 @@ const GameScreen = ({state, nav}) => {
               source={iconLamp}
               resizeMode="contain"
             />
-            <View
-              style={{
-                position: 'absolute',
-                bottom: -10,
-                right: -12,
-              }}>
-              <Text style={styles.countHint}>{state.hintCount}</Text>
+            <View style={styles.hintCountContainer}>
+              <Text style={styles.countHint}>{hintCount}</Text>
             </View>
           </TouchableOpacity>
 
           <View style={{position: 'absolute', top: '16%'}}>
             <FlatList
               horizontal={true}
-              data={pointGames}
+              data={local.pointGames}
               renderItem={({item}) => (
                 <View
                   style={{
@@ -226,30 +288,39 @@ const GameScreen = ({state, nav}) => {
           </View>
           <View>
             <ImageScreen
-              images={gameZone.imageGames.first}
+              images={local.gameZone.imageGames.first}
               pressScreen={pressScreen}
-              gameZone={gameZone}
-              clickWrong={clickWrong}
+              gameZone={local.gameZone}
+              clickWrong={local.clickWrong}
               pressGood={pressGood}
             />
             <View style={{height: 5}} />
             <ImageScreen
-              images={gameZone.imageGames.second}
+              images={local.gameZone.imageGames.second}
               pressScreen={pressScreen}
-              gameZone={gameZone}
-              clickWrong={clickWrong}
+              gameZone={local.gameZone}
+              clickWrong={local.clickWrong}
               pressGood={pressGood}
             />
           </View>
         </View>
-      </ImageBackground>
-    </>
+      </BgWrapper>
+    ),
+    [
+      exitToStart,
+      hintCount,
+      local.clickWrong,
+      local.gameZone,
+      local.openMenu,
+      local.pointGames,
+      local.runTimer,
+      local.timer,
+      nav,
+      onFinish,
+      onGetHint,
+      pressGood,
+    ],
   );
 };
 
-const GameScreenEnhunst = props => {
-  const state = useSelector(state => state);
-  return useMemo(() => <GameScreen state={state} nav={props.nav} />, [state]);
-};
-
-export default GameScreenEnhunst;
+export default GameScreen;

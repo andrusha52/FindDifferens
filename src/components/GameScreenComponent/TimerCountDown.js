@@ -1,5 +1,7 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
+import {setTimerIsOver} from '../../redux/reducer';
+import {useDispatch} from 'react-redux';
 
 const minusMinute = minut => {
   const m = Number(minut);
@@ -14,7 +16,7 @@ const minusMinute = minut => {
 
 const getTime = time => {
   const value = time.split(':');
-  if ( value[0] === '00' && value[1] === '00' ) {
+  if (value[0] === '00' && value[1] === '00') {
     return '00:00';
   }
   if (value[1] === '00') {
@@ -32,9 +34,16 @@ const styles = StyleSheet.create({
   },
 });
 
-const TimerCountDown = ({timer, onFinish, runTimer}) => {
+const TimerCountDown = ({timer, runTimer}) => {
   const [time, setTime] = useState(`0${timer}:00`);
   const [int, setInt] = useState(-1);
+
+  const dispatch = useDispatch();
+
+  const onFinish = useCallback(() => {
+    dispatch(setTimerIsOver(false));
+  }, [dispatch]);
+
   useEffect(() => {
     if (!runTimer) {
       clearInterval(int);
@@ -56,7 +65,7 @@ const TimerCountDown = ({timer, onFinish, runTimer}) => {
       clearInterval(int);
       setInt(-1);
     };
-  }, [timer, runTimer]);
+  }, [int, onFinish, runTimer, time, timer]);
   return (
     <View>
       <Text style={styles.text}>{time}</Text>

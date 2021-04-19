@@ -1,7 +1,6 @@
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import {
   BackHandler,
-  ToastAndroid,
   StatusBar,
   Image,
   View,
@@ -12,15 +11,15 @@ import {
   NativeModules,
   TouchableOpacity,
   Dimensions,
-  ScrollView,
 } from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import Carousel from 'react-native-snap-carousel';
-import {connect} from 'react-redux';
 
 import {setSelectLevel} from '../../redux/reducer';
-import imageBgAll from '../../imageGames/newDesign/imageBgAll.png';
+
 import close from '../../imageGames/newDesign/back.png';
 import closeLvl from '../../imageGames/newDesign/close.png';
+import BgWrapper from '../BgWrapper';
 
 const countOnPage = 8;
 
@@ -41,16 +40,17 @@ const listPages = data => {
   return result;
 };
 
-const ListItemImage = ({elem, setSelectLevel, goToGame, dataList}) => {
-  const index = dataList.findIndex(
-    item => item.imageGames.first === elem.imageGames.first,
-  );
+const ListItemImage = ({index, goToGame, elem}) => {
+  const dispatch = useDispatch();
+  if (!elem.imageGames) {
+    return null;
+  }
   return (
     <View>
       <TouchableOpacity
         style={styles.imageContainer}
         onPress={() => {
-          setSelectLevel(index);
+          dispatch(setSelectLevel(index));
           goToGame();
         }}
         disabled={!elem.done}>
@@ -71,38 +71,31 @@ const ListItemImage = ({elem, setSelectLevel, goToGame, dataList}) => {
 };
 
 const CategoryGames = props => {
-  const dataList = props.state.gameLevelList;
+  const dataList = useSelector(localState => localState.gameLevelList);
 
   const compliteLvlCount = dataList.filter(item => item.done).length;
   const handleBackButton = () => {
-    ToastAndroid.show(
-      'Для того что бы выйти , откройте МЕНЮ',
-      ToastAndroid.SHORT,
-    );
-
     return true;
   };
-  const goToGame = () => {
+  const goToGame = useCallback(() => {
     props.navigation.navigate('PreStart_Game');
-  };
+  }, [props.navigation]);
 
-  const renderItem = ({item}) => {
-    return (
-      <FlatList
-        data={item}
-        renderItem={({item: elem}) => (
-          <ListItemImage
-            elem={elem}
-            setSelectLevel={props.setSelectLevel}
-            goToGame={goToGame}
-            dataList={dataList}
-          />
-        )}
-        style={styles.containerList}
-        numColumns={2}
-      />
-    );
-  };
+  const renderItem = useCallback(
+    ({item}) => {
+      return (
+        <FlatList
+          data={item}
+          renderItem={({item: elem, index}) => (
+            <ListItemImage elem={elem} index={index} goToGame={goToGame} />
+          )}
+          style={styles.containerList}
+          numColumns={2}
+        />
+      );
+    },
+    [goToGame],
+  );
 
   useEffect(() => {
     NativeModules.NavigationBarColor.hideNavigationBar();
@@ -112,50 +105,44 @@ const CategoryGames = props => {
     });
 
     BackHandler.addEventListener('hardwareBackPress', handleBackButton);
-  }, []);
-  return (
-    <ImageBackground source={imageBgAll} style={styles.imageBG}>
-      <View style={{width: '100%', height: '100%'}}>
-        <StatusBar hidden={true} />
+  }, [props.navigation]);
+  return useMemo(
+    () => (
+      <BgWrapper>
+        <View style={{width: '100%', height: '100%'}}>
+          <StatusBar hidden={true} />
 
-        <TouchableOpacity
-          onPress={() => props.navigation.goBack()}
-          style={styles.btnBack}>
-          <Image source={close} style={styles.iconClose} />
-        </TouchableOpacity>
-        <View style={styles.titleCategoryContainer}>
-          <Text style={styles.titleText}>
-            DIFFERENCES FOUNDS: {compliteLvlCount}/{dataList.length}
-          </Text>
-          <View style={styles.listContainer}>
-            <Carousel
-              sliderWidth={screenWidth}
-              sliderHeight={screenWidth + screenWidth}
-              itemWidth={screenWidth - 30}
-              data={listPages(dataList)}
-              renderItem={renderItem}
-            />
+          <TouchableOpacity
+            onPress={() => props.navigation.goBack()}
+            style={styles.btnBack}>
+            <Image source={close} style={styles.iconClose} />
+          </TouchableOpacity>
+          <View style={styles.titleCategoryContainer}>
+            <Text style={styles.titleText}>
+              DIFFERENCES FOUNDS: {compliteLvlCount}/{dataList.length}
+            </Text>
+            <View style={styles.listContainer}>
+              <Carousel
+                sliderWidth={screenWidth - 50}
+                sliderHeight={screenWidth + screenWidth}
+                itemWidth={screenWidth - 30}
+                data={listPages(dataList)}
+                renderItem={renderItem}
+              />
+            </View>
           </View>
         </View>
-      </View>
-    </ImageBackground>
+      </BgWrapper>
+    ),
+    [compliteLvlCount, dataList, props.navigation, renderItem],
   );
 };
 
-const mstp = state => ({
-  state: state,
-});
-const mapDispatchToProps = {
-  setSelectLevel: setSelectLevel,
-};
-export default connect(
-  mstp,
-  mapDispatchToProps,
-)(CategoryGames);
+export default CategoryGames;
 
 const styles = StyleSheet.create({
   containerList: {
-    width: screenWidth - 20,
+    width: screenWidth,
     flexWrap: 'wrap',
     flexDirection: 'row',
     marginTop: '10%',
@@ -175,13 +162,12 @@ const styles = StyleSheet.create({
   },
   imageBG: {
     flex: 1,
-    resizeMode: 'cover',
     justifyContent: 'center',
   },
   btnBack: {
     position: 'absolute',
-    left: '5%',
-    top: '7%',
+    left: '8%',
+    top: '5%',
   },
   iconClose: {
     width: 25,
@@ -214,5 +200,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  bgLine: {
+    width: '100%',
+    height: '100%',
   },
 });

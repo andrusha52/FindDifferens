@@ -2,8 +2,6 @@ import {StyleSheet, Dimensions} from 'react-native';
 
 const MAIN_COLOR = '#fff'; // main screen bg
 const COLOR_TRUE_POINT = 'red'; // color check point valid color
-const COLOR_CIRCLE_TRUE = 'green'; // color cyrcle true click
-const GAME_CIRCLE = 'orange';
 
 export default StyleSheet.create({
   mainScreen: {
@@ -17,11 +15,7 @@ export default StyleSheet.create({
     position: 'relative',
     zIndex: 1,
   },
-  image: {
-    flex: 1,
-    resizeMode: 'cover',
-    justifyContent: 'center',
-  },
+
   wrongCLick: {
     position: 'absolute',
     width: 1,
@@ -53,23 +47,23 @@ export default StyleSheet.create({
   },
   btnMenu: {
     position: 'absolute',
-    top: 50,
-    right: 15,
+    top: 40,
+    right: 40,
     zIndex: 10,
     alignItems: 'center',
     justifyContent: 'center',
   },
   btnHint: {
     position: 'absolute',
-    top: 50,
-    left: 15,
+    top: 40,
+    left: 40,
     zIndex: 10,
     alignItems: 'center',
     justifyContent: 'center',
   },
   iconBtnControl: {
-    width: 80,
-    height: 80,
+    width: 50,
+    height: 50,
   },
   countHint: {
     color: MAIN_COLOR,
@@ -85,13 +79,19 @@ export default StyleSheet.create({
   countDown: {
     borderColor: MAIN_COLOR,
     fontFamily: 'LuckiestGuy-Regular',
+
   },
   countDownText: {
     color: MAIN_COLOR,
-    fontSize: 30,
+    fontSize: 25,
     fontFamily: 'LuckiestGuy-Regular',
   },
   countDownTextTime: {
     fontFamily: 'LuckiestGuy-Regular',
+  },
+  hintCountContainer: {
+    position: 'absolute',
+    bottom: -10,
+    right: -12,
   },
 });

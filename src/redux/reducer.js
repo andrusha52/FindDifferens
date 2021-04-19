@@ -10,7 +10,7 @@ const minusHintCount = 'MINUS_HINT_COUNT';
 
 const initState = {
   arrLevel: [],
-  timerIsOVer: false,
+  timerIsOver: false,
   levelHard: 2,
   levelSelected: 0,
   gameLevelList: [
@@ -32,7 +32,7 @@ const gameReducer = (state = initState, action) => {
     case arrLevel:
       return {...state};
     case timerOver:
-      return {...state, timerIsOVer: action.payload};
+      return {...state, timerIsOver: action.payload};
     case levelHardSelector:
       return {...state, levelHard: action.payload};
     case levelSelected:

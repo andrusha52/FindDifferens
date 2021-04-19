@@ -1,81 +1,51 @@
-import React, {Component} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {
   View,
-  Button,
   BackHandler,
   Image,
   ToastAndroid,
   ImageBackground,
   StyleSheet,
-  TouchableOpacity,
+  Text,
 } from 'react-native';
-import {connect} from 'react-redux';
-import {setTimerIsOver} from '../redux/reducer';
+
 import imageBgAll from '../imageGames/newDesign/imageBgAll.png';
-import iconNextLvl from '../imageGames/newDesign/nextLvl.png';
-import iconArrowDone from '../imageGames/newDesign/arrowDone.png';
 import iconDone from '../imageGames/newDesign/done.png';
 
-class ModalScreen extends Component {
-  state = {};
-  componentDidMount() {
-    this.props.navigation.setOptions({
-      headerLeft: () => '',
-      title: '',
-      headerShown: false,
-    });
-    BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
-  }
-
-  handleBackButton() {
+const ModalScreen = props => {
+  const handleBackButton = () => {
     ToastAndroid.show('Back button is pressed', ToastAndroid.SHORT);
     return true;
-  }
-  handleNextLvl() {
-    this.props.navigation.push('PreStart_Game');
-  }
+  };
+  const handleNextLvl = useCallback(() => {
+    const timeOut = setTimeout(() => {
+      props.navigation.push('PreStart_Game');
+      clearTimeout(timeOut);
+    }, 5000);
+  }, [props.navigation]);
 
-  render() {
-    return (
-      <ImageBackground source={imageBgAll} style={styles.image}>
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-          <TouchableOpacity onPress={this.handleNextLvl.bind(this)}>
-            <Image source={iconDone} style={styles.done} resizeMode="contain" />
-            <Image
-              source={iconNextLvl}
-              style={styles.done}
-              resizeMode="contain"
-            />
-            <Image
-              source={iconArrowDone}
-              style={styles.done}
-              resizeMode="contain"
-            />
-          </TouchableOpacity>
-        </View>
-      </ImageBackground>
-    );
-  }
-}
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', handleBackButton);
+    handleNextLvl();
+  }, [handleNextLvl]);
 
-const mstp = state => ({
-  state: state,
-});
-
-const mdtp = {
-  setTimerIsOver: setTimerIsOver,
+  return (
+    <ImageBackground source={imageBgAll} style={styles.image}>
+      <View
+        style={{
+          flex: 1,
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+        <Image source={iconDone} style={styles.done} resizeMode="contain" />
+        <Text style={styles.text}>level complete</Text>
+      </View>
+    </ImageBackground>
+  );
 };
 
-export default connect(
-  mstp,
-  mdtp,
-)(ModalScreen);
+export default ModalScreen;
 
 const styles = StyleSheet.create({
   image: {
@@ -86,5 +56,11 @@ const styles = StyleSheet.create({
   done: {
     width: 200,
     height: 100,
+    marginBottom: 40,
+  },
+  text: {
+    fontSize: 20,
+    color: 'orange',
+    fontFamily: 'LuckiestGuy-Regular',
   },
 });

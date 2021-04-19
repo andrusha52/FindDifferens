@@ -1,15 +1,7 @@
 import React from 'react';
-import {
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  ImageBackground,
-  Image,
-  Dimensions,
-  View,
-} from 'react-native';
-import imageBgAll from '../imageGames/newDesign/imageBgAll.png';
+import {Text, TouchableOpacity, StyleSheet, Image, View} from 'react-native';
 import arrowRigth from '../imageGames/newDesign/arrowRight.png';
+import BgWrapper from './BgWrapper';
 
 const ModalScreenNextLVL = props => {
   if (!props.openMenu) {
@@ -17,10 +9,7 @@ const ModalScreenNextLVL = props => {
   } else {
     return (
       <View style={styles.containerAbsolut}>
-        <ImageBackground
-          source={imageBgAll}
-          style={styles.centeredView}
-          resizeMode="stretch">
+        <BgWrapper>
           <Text style={styles.modalText}>PAUSE</Text>
           <TouchableOpacity
             style={styles.openButton}
@@ -44,7 +33,7 @@ const ModalScreenNextLVL = props => {
             />
             <Text style={styles.textStyle}>QIUTE GAME</Text>
           </TouchableOpacity>
-        </ImageBackground>
+        </BgWrapper>
       </View>
     );
   }
@@ -55,8 +44,8 @@ export default ModalScreenNextLVL;
 const styles = StyleSheet.create({
   containerAbsolut: {
     position: 'absolute',
-    width: Dimensions.get('screen').width,
-    height: Dimensions.get('screen').height,
+    width: '100%',
+    height: '102%',
     zIndex: 1000,
   },
   centeredView: {
